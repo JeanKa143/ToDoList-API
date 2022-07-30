@@ -51,8 +51,8 @@ namespace ToDoLIst_DAL.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "c5e6bc98-d47b-4687-82db-b332bbd6aea1",
-                            ConcurrencyStamp = "2a7fec2e-23b5-4d07-9519-900c1574eed0",
+                            Id = "e45ad016-aaa4-4dd3-a5ee-69dcb07604c5",
+                            ConcurrencyStamp = "4a98c78f-584c-4914-895a-41957d8906db",
                             Name = "User",
                             NormalizedName = "USER"
                         });

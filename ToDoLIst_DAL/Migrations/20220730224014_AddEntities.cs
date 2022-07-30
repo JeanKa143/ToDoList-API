@@ -246,7 +246,7 @@ namespace ToDoLIst_DAL.Migrations
             migrationBuilder.InsertData(
                 table: "AspNetRoles",
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
-                values: new object[] { "c5e6bc98-d47b-4687-82db-b332bbd6aea1", "2a7fec2e-23b5-4d07-9519-900c1574eed0", "User", "USER" });
+                values: new object[] { "e45ad016-aaa4-4dd3-a5ee-69dcb07604c5", "4a98c78f-584c-4914-895a-41957d8906db", "User", "USER" });
 
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",

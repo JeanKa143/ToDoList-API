@@ -13,9 +13,10 @@ namespace ToDoLIst_DAL.Repositories
             _userManager = userManager;
         }
 
-        public Task DeleteAsync(AppUser user)
+        public async Task<IEnumerable<IdentityError>> DeleteAsync(AppUser user)
         {
-            return _userManager.DeleteAsync(user);
+            var result = await _userManager.DeleteAsync(user);
+            return result.Errors;
         }
 
         public async Task<AppUser?> GetAsync(string email)

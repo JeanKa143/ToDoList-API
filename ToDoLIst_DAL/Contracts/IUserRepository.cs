@@ -9,7 +9,7 @@ namespace ToDoLIst_DAL.Contracts
         Task<AppUser?> GetAsync(string email);
         Task<IEnumerable<IdentityError>> UpdateAsync(AppUser user);
         Task<IEnumerable<IdentityError>> UpdatePasswordAsync(AppUser user, string oldPassword, string newPassword);
-        Task DeleteAsync(AppUser user);
+        Task<IEnumerable<IdentityError>> DeleteAsync(AppUser user);
 
         Task<bool> CheckPasswordAsync(AppUser user, string password);
     }

@@ -19,9 +19,9 @@ namespace ToDoLIst_DAL.Repositories
             return result.Errors;
         }
 
-        public async Task<AppUser?> GetAsync(string email)
+        public async Task<AppUser?> GetByIdAsync(string id)
         {
-            return await _userManager.FindByEmailAsync(email);
+            return await _userManager.FindByIdAsync(id);
         }
 
         public async Task<IEnumerable<IdentityError>> AddAsync(AppUser newUser, string userPassword)

@@ -10,10 +10,11 @@ namespace ToDoList_BAL.Configurations
     {
         public AutoMapperConfiguration()
         {
-            CreateMap<AuthData, AuthDTO>();
+            CreateMap<AuthData, AuthDTO>().ReverseMap();
             CreateMap<AppUser, UserDTO>();
 
-            CreateMap<CreateUserDTO, AppUser>();
+            CreateMap<CreateUserDTO, AppUser>()
+                .ForMember(d => d.UserName, options => options.MapFrom(s => s.Email));
             CreateMap<UpdateUserDTO, AppUser>();
         }
     }

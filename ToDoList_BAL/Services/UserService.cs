@@ -37,8 +37,13 @@ namespace ToDoList_BAL.Services
             return _mapper.Map<UserDTO>(user);
         }
 
-        public async Task<IEnumerable<IdentityError>> UpdateAsync(UpdateUserDTO updateUserDto)
+        public async Task<IEnumerable<IdentityError>> UpdateAsync(string id, UpdateUserDTO updateUserDto)
         {
+            if (id != updateUserDto.Id)
+            {
+                throw new BadRequestException();
+            }
+
             var user = await GetUserById(updateUserDto.Id);
             user = _mapper.Map(updateUserDto, user);
 
@@ -46,8 +51,13 @@ namespace ToDoList_BAL.Services
             return errors;
         }
 
-        public async Task<IEnumerable<IdentityError>> UpdatePasswordAsync(UpdatePasswordDTO updatePasswordDto)
+        public async Task<IEnumerable<IdentityError>> UpdatePasswordAsync(string id, UpdatePasswordDTO updatePasswordDto)
         {
+            if (id != updatePasswordDto.UserId)
+            {
+                throw new BadRequestException();
+            }
+
             if (updatePasswordDto.NewPassword != updatePasswordDto.ConfirmPassword)
             {
                 throw new BadRequestException("Passwords do not match");
@@ -59,8 +69,13 @@ namespace ToDoList_BAL.Services
             return errors;
         }
 
-        public async Task<IEnumerable<IdentityError>> DeleteAsync(DeleteUserDTO deleteUserDto)
+        public async Task<IEnumerable<IdentityError>> DeleteAsync(string id, DeleteUserDTO deleteUserDto)
         {
+            if (id != deleteUserDto.Id)
+            {
+                throw new BadRequestException();
+            }
+
             var user = await GetUserById(deleteUserDto.Id);
             var isValidPassword = await _userRepository.CheckPasswordAsync(user, deleteUserDto.Password);
 

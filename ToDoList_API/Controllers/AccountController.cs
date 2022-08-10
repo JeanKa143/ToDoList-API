@@ -55,21 +55,36 @@ namespace ToDoList_API.Controllers
         [HttpPut]
         public async Task<IActionResult> Put([FromBody] UpdateUserDTO updateUserDto)
         {
-            var errors = await _userService.UpdateAsync(GetUserIdFromToken(), updateUserDto);
+            if (GetUserIdFromToken() != updateUserDto.Id)
+            {
+                return BadRequest();
+            }
+
+            var errors = await _userService.UpdateAsync(updateUserDto);
             return HandleResponse(errors);
         }
 
         [HttpPut("update-password")]
         public async Task<IActionResult> UpdatePassword([FromBody] UpdatePasswordDTO updatePasswordDto)
         {
-            var errors = await _userService.UpdatePasswordAsync(GetUserIdFromToken(), updatePasswordDto);
+            if (GetUserIdFromToken() != updatePasswordDto.UserId)
+            {
+                return BadRequest();
+            }
+
+            var errors = await _userService.UpdatePasswordAsync(updatePasswordDto);
             return HandleResponse(errors);
         }
 
         [HttpDelete]
         public async Task<IActionResult> Delete([FromBody] DeleteUserDTO deleteUserDto)
         {
-            var errors = await _userService.DeleteAsync(GetUserIdFromToken(), deleteUserDto);
+            if (GetUserIdFromToken() != deleteUserDto.Id)
+            {
+                return BadRequest();
+            }
+
+            var errors = await _userService.DeleteAsync(deleteUserDto);
             return HandleResponse(errors);
         }
 

@@ -31,19 +31,14 @@ namespace ToDoList_BAL.Services
             return errors;
         }
 
-        public async Task<UserDTO> GetByIdAsync(string userId)
+        public async Task<UserDTO> GetByIdAsync(string id)
         {
-            var user = await GetUserById(userId);
+            var user = await GetUserById(id);
             return _mapper.Map<UserDTO>(user);
         }
 
-        public async Task<IEnumerable<IdentityError>> UpdateAsync(string id, UpdateUserDTO updateUserDto)
+        public async Task<IEnumerable<IdentityError>> UpdateAsync(UpdateUserDTO updateUserDto)
         {
-            if (id != updateUserDto.Id)
-            {
-                throw new BadRequestException();
-            }
-
             var user = await GetUserById(updateUserDto.Id);
             user = _mapper.Map(updateUserDto, user);
 
@@ -51,13 +46,8 @@ namespace ToDoList_BAL.Services
             return errors;
         }
 
-        public async Task<IEnumerable<IdentityError>> UpdatePasswordAsync(string id, UpdatePasswordDTO updatePasswordDto)
+        public async Task<IEnumerable<IdentityError>> UpdatePasswordAsync(UpdatePasswordDTO updatePasswordDto)
         {
-            if (id != updatePasswordDto.UserId)
-            {
-                throw new BadRequestException();
-            }
-
             if (updatePasswordDto.NewPassword != updatePasswordDto.ConfirmPassword)
             {
                 throw new BadRequestException("Passwords do not match");
@@ -69,13 +59,8 @@ namespace ToDoList_BAL.Services
             return errors;
         }
 
-        public async Task<IEnumerable<IdentityError>> DeleteAsync(string id, DeleteUserDTO deleteUserDto)
+        public async Task<IEnumerable<IdentityError>> DeleteAsync(DeleteUserDTO deleteUserDto)
         {
-            if (id != deleteUserDto.Id)
-            {
-                throw new BadRequestException();
-            }
-
             var user = await GetUserById(deleteUserDto.Id);
             var isValidPassword = await _userRepository.CheckPasswordAsync(user, deleteUserDto.Password);
 
@@ -88,13 +73,13 @@ namespace ToDoList_BAL.Services
             return errors;
         }
 
-        private async Task<AppUser> GetUserById(string userId)
+        private async Task<AppUser> GetUserById(string id)
         {
-            var user = await _userRepository.GetByIdAsync(userId);
+            var user = await _userRepository.GetByIdAsync(id);
 
             if (user is null)
             {
-                throw new NotFoundException("User", userId);
+                throw new NotFoundException("User", id);
             }
 
             return user;

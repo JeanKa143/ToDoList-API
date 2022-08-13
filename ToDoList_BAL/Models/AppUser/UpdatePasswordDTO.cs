@@ -14,6 +14,7 @@ namespace ToDoList_BAL.Models.AppUser
         public string NewPassword { get; set; } = string.Empty;
 
         [Required]
+        [Compare(nameof(NewPassword), ErrorMessage = "The new password and confirmation password do not match.")]
         public string ConfirmPassword { get; set; } = string.Empty;
     }
 }

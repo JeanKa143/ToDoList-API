@@ -1,5 +1,5 @@
 ﻿using Newtonsoft.Json;
-using System.Net;
+using ToDoList_API.Errors;
 using ToDoList_BAL.Exceptions;
 
 namespace ToDoList_API.Middlewares
@@ -29,39 +29,36 @@ namespace ToDoList_API.Middlewares
 
         private Task HandleExceptionAsync(HttpContext context, Exception ex)
         {
+            var apiError = CreateApiError(context, ex);
+            string response = JsonConvert.SerializeObject(apiError);
+
             context.Response.ContentType = "application/json";
-            var errorMessage = ex.Message;
-
-            var statusCode = ex switch
-            {
-                BadRequestException => HttpStatusCode.BadRequest,
-                LoginException => HttpStatusCode.Unauthorized,
-                NotFoundException => HttpStatusCode.NotFound,
-                _ => HttpStatusCode.InternalServerError,
-            };
-
-            if (statusCode == HttpStatusCode.InternalServerError)
-            {
-                _logger.LogError(ex, "Something went wrong while processing {RequestPath}", context.Request.Path);
-                errorMessage = "An unexpected error occurred";
-            }
-
-            var errorDetails = new ErrorDetails
-            {
-                ErrorType = statusCode.ToString(),
-                ErrorMessage = errorMessage
-            };
-
-            string response = JsonConvert.SerializeObject(errorDetails);
-            context.Response.StatusCode = (int)statusCode;
+            context.Response.StatusCode = apiError.StatusCode;
             return context.Response.WriteAsync(response);
         }
 
-    }
+        private ApiError CreateApiError(HttpContext context, Exception ex)
+        {
+            ApiError apiError;
 
-    public class ErrorDetails
-    {
-        public string ErrorType { get; set; } = string.Empty;
-        public string ErrorMessage { get; set; } = string.Empty;
+            switch (ex)
+            {
+                case NotFoundException:
+                    apiError = new NotFoundError(ex.Message);
+                    break;
+                case BadRequestException:
+                    apiError = new BadRequestError(ex.Message);
+                    break;
+                case LoginException:
+                    apiError = new UnauthorizedError(ex.Message);
+                    break;
+                default:
+                    _logger.LogError(ex, "Something went wrong while processing {RequestPath}", context.Request.Path);
+                    apiError = new InternalServerError("An unexpected error occurred");
+                    break;
+            }
+
+            return apiError;
+        }
     }
 }

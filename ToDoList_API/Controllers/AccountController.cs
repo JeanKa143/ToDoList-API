@@ -97,6 +97,7 @@ namespace ToDoList_API.Controllers
                     ModelState.AddModelError(error.Code, error.Description);
                 }
 
+                //Todo: change object to be returned to an api error object
                 return BadRequest(ModelState);
             }
 

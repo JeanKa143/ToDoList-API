@@ -1,9 +1,11 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using System.Text;
+using ToDoList_API.Errors;
 using ToDoList_API.Middlewares;
 using ToDoList_BAL.Services;
 using ToDoLIst_DAL.Auth;
@@ -11,6 +13,7 @@ using ToDoLIst_DAL.Contracts;
 using ToDoLIst_DAL.Data;
 using ToDoLIst_DAL.Entities;
 using ToDoLIst_DAL.Repositories;
+using static System.Net.Mime.MediaTypeNames;
 
 var builder = WebApplication.CreateBuilder(args);
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
@@ -80,7 +83,15 @@ builder.Services.AddAuthentication(options =>
     IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["JwtSettings:Key"]))
 });
 
-builder.Services.AddControllers();
+builder.Services.AddControllers()
+    .ConfigureApiBehaviorOptions(options =>
+    {
+        options.InvalidModelStateResponseFactory = context =>
+            new BadRequestObjectResult(new BadRequestError(context.ModelState, "One or more fields are invalid"))
+            {
+                ContentTypes = { Application.Json }
+            };
+    });
 
 var app = builder.Build();
 

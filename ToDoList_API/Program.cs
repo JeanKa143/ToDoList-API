@@ -87,7 +87,7 @@ builder.Services.AddControllers()
     .ConfigureApiBehaviorOptions(options =>
     {
         options.InvalidModelStateResponseFactory = context =>
-            new BadRequestObjectResult(new BadRequestError(context.ModelState, "One or more fields are invalid"))
+            new BadRequestObjectResult(new BadRequestError(context.ModelState))
             {
                 ContentTypes = { Application.Json }
             };

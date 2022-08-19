@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using ToDoList_API.Errors;
 using ToDoList_BAL.Models;
 using ToDoList_BAL.Models.AppUser;
 using ToDoList_BAL.Services;
@@ -33,7 +33,10 @@ namespace ToDoList_API.Controllers
         public async Task<IActionResult> Register([FromBody] CreateUserDTO createUserDto)
         {
             var errors = await _userService.AddAsync(createUserDto);
-            return HandleResponse(errors);
+
+            return errors.Any()
+                ? BadRequest(new IdentityBadRequestError(errors, nameof(CreateUserDTO)))
+                : NoContent();
         }
 
         [HttpPost("login")]
@@ -57,11 +60,13 @@ namespace ToDoList_API.Controllers
         {
             if (GetUserIdFromToken() != updateUserDto.Id)
             {
-                return BadRequest();
+                return BadRequest(new BadRequestError("Invalid user id"));
             }
 
             var errors = await _userService.UpdateAsync(updateUserDto);
-            return HandleResponse(errors);
+            return errors.Any()
+                ? BadRequest(new IdentityBadRequestError(errors, nameof(UpdateUserDTO)))
+                : NoContent();
         }
 
         [HttpPut("update-password")]
@@ -69,11 +74,13 @@ namespace ToDoList_API.Controllers
         {
             if (GetUserIdFromToken() != updatePasswordDto.UserId)
             {
-                return BadRequest();
+                return BadRequest(new BadRequestError("Invalid user id"));
             }
 
             var errors = await _userService.UpdatePasswordAsync(updatePasswordDto);
-            return HandleResponse(errors);
+            return errors.Any()
+                ? BadRequest(new IdentityBadRequestError(errors, nameof(UpdatePasswordDTO)))
+                : NoContent();
         }
 
         [HttpDelete]
@@ -81,27 +88,13 @@ namespace ToDoList_API.Controllers
         {
             if (GetUserIdFromToken() != deleteUserDto.Id)
             {
-                return BadRequest();
+                return BadRequest(new BadRequestError("Invalid user id"));
             }
 
             var errors = await _userService.DeleteAsync(deleteUserDto);
-            return HandleResponse(errors);
-        }
-
-        private IActionResult HandleResponse(IEnumerable<IdentityError> errors)
-        {
-            if (errors.Any())
-            {
-                foreach (var error in errors)
-                {
-                    ModelState.AddModelError(error.Code, error.Description);
-                }
-
-                //Todo: change object to be returned to an api error object
-                return BadRequest(ModelState);
-            }
-
-            return NoContent();
+            return errors.Any()
+                ? BadRequest(new IdentityBadRequestError(errors, nameof(DeleteUserDTO)))
+                : NoContent();
         }
 
         private string GetUserIdFromToken()

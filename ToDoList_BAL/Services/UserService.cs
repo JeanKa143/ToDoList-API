@@ -48,11 +48,6 @@ namespace ToDoList_BAL.Services
 
         public async Task<IEnumerable<IdentityError>> UpdatePasswordAsync(UpdatePasswordDTO updatePasswordDto)
         {
-            if (updatePasswordDto.NewPassword != updatePasswordDto.ConfirmPassword)
-            {
-                throw new BadRequestException("Passwords do not match");
-            }
-
             var user = await GetUserById(updatePasswordDto.UserId);
             var errors = await _userRepository.UpdatePasswordAsync(user, updatePasswordDto.OldPassword, updatePasswordDto.NewPassword);
 

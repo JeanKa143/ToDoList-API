@@ -20,9 +20,9 @@ namespace ToDoList_API.Errors
                     AddErrorsToDictionary(dictionary, nameof(CreateUserDTO.Email), GetUserNameAndEmailErrors(errors));
                     AddErrorsToDictionary(dictionary, nameof(CreateUserDTO.Password), GetNewPasswordErrors(errors));
                     break;
-                case nameof(UpdatePasswordDTO):
-                    AddErrorsToDictionary(dictionary, nameof(UpdatePasswordDTO.OldPassword), GetOldPasswordErrors(errors));
-                    AddErrorsToDictionary(dictionary, nameof(UpdatePasswordDTO.NewPassword), GetNewPasswordErrors(errors));
+                case nameof(UpdateUserPasswordDTO):
+                    AddErrorsToDictionary(dictionary, nameof(UpdateUserPasswordDTO.OldPassword), GetOldPasswordErrors(errors));
+                    AddErrorsToDictionary(dictionary, nameof(UpdateUserPasswordDTO.NewPassword), GetNewPasswordErrors(errors));
                     break;
                 default:
                     break;

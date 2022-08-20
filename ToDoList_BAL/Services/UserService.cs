@@ -31,7 +31,7 @@ namespace ToDoList_BAL.Services
             return errors;
         }
 
-        public async Task<UserDTO> GetByIdAsync(string id)
+        public async Task<UserDTO> GetByIdAsync(Guid id)
         {
             var user = await GetUserById(id);
             return _mapper.Map<UserDTO>(user);
@@ -46,9 +46,9 @@ namespace ToDoList_BAL.Services
             return errors;
         }
 
-        public async Task<IEnumerable<IdentityError>> UpdatePasswordAsync(UpdatePasswordDTO updatePasswordDto)
+        public async Task<IEnumerable<IdentityError>> UpdatePasswordAsync(UpdateUserPasswordDTO updatePasswordDto)
         {
-            var user = await GetUserById(updatePasswordDto.UserId);
+            var user = await GetUserById(updatePasswordDto.Id);
             var errors = await _userRepository.UpdatePasswordAsync(user, updatePasswordDto.OldPassword, updatePasswordDto.NewPassword);
 
             return errors;
@@ -68,9 +68,9 @@ namespace ToDoList_BAL.Services
             return errors;
         }
 
-        private async Task<AppUser> GetUserById(string id)
+        private async Task<AppUser> GetUserById(Guid id)
         {
-            var user = await _userRepository.GetByIdAsync(id);
+            var user = await _userRepository.GetByIdAsync(id.ToString());
 
             if (user is null)
             {

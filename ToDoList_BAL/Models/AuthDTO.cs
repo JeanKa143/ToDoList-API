@@ -5,7 +5,7 @@ namespace ToDoList_BAL.Models
     public class AuthDTO
     {
         [Required]
-        public string UserId { get; set; } = string.Empty;
+        public Guid UserId { get; set; } = Guid.Empty;
         [Required]
         public string Token { get; set; } = string.Empty;
         [Required]

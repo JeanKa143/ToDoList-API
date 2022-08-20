@@ -2,10 +2,10 @@
 
 namespace ToDoList_BAL.Models.AppUser
 {
-    public class DeleteUserDTO
+    public class DeleteUserDTO : IModel<Guid>
     {
         [Required]
-        public string Id { get; set; } = string.Empty;
+        public Guid Id { get; set; } = Guid.Empty;
 
         [Required]
         public string Password { get; set; } = string.Empty;

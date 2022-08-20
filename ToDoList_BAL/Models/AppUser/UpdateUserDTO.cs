@@ -1,7 +1,7 @@
 ﻿namespace ToDoList_BAL.Models.AppUser
 {
-    public class UpdateUserDTO : BaseUserDTO
+    public class UpdateUserDTO : BaseUserDTO, IModel<Guid>
     {
-        public string Id { get; set; } = string.Empty;
+        public Guid Id { get; set; } = Guid.Empty;
     }
 }

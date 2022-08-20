@@ -6,6 +6,7 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using System.Text;
 using ToDoList_API.Errors;
+using ToDoList_API.Filters;
 using ToDoList_API.Middlewares;
 using ToDoList_BAL.Services;
 using ToDoLIst_DAL.Auth;
@@ -66,6 +67,8 @@ builder.Services.AddScoped<IAuthManager, AuthManager>();
 
 builder.Services.AddScoped<UserService>();
 builder.Services.AddScoped<AuthService>();
+
+builder.Services.AddScoped<ValidateUserIdAttribute>();
 
 builder.Services.AddAuthentication(options =>
 {

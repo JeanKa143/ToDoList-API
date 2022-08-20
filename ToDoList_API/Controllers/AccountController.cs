@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using ToDoList_API.Errors;
+using ToDoList_API.Filters;
 using ToDoList_BAL.Models;
 using ToDoList_BAL.Models.AppUser;
 using ToDoList_BAL.Services;
@@ -61,13 +62,9 @@ namespace ToDoList_API.Controllers
         }
 
         [HttpPut("{userId}")]
+        [ServiceFilter(typeof(ValidateUserIdAttribute))]
         public async Task<IActionResult> Put([FromRoute] Guid userId, [FromBody] UpdateUserDTO updateUserDto)
         {
-            if (userId != updateUserDto.Id || GetUserIdFromToken() != updateUserDto.Id.ToString())
-            {
-                return BadRequest(new BadRequestError("Invalid user id"));
-            }
-
             var errors = await _userService.UpdateAsync(updateUserDto);
             return errors.Any()
                 ? BadRequest(new IdentityBadRequestError(errors, nameof(UpdateUserDTO)))
@@ -75,13 +72,9 @@ namespace ToDoList_API.Controllers
         }
 
         [HttpPut("{userId}/update-password")]
+        [ServiceFilter(typeof(ValidateUserIdAttribute))]
         public async Task<IActionResult> UpdatePassword([FromRoute] Guid userId, [FromBody] UpdateUserPasswordDTO updatePasswordDto)
         {
-            if (userId != updatePasswordDto.Id || GetUserIdFromToken() != updatePasswordDto.Id.ToString())
-            {
-                return BadRequest(new BadRequestError("Invalid user id"));
-            }
-
             var errors = await _userService.UpdatePasswordAsync(updatePasswordDto);
             return errors.Any()
                 ? BadRequest(new IdentityBadRequestError(errors, nameof(UpdateUserPasswordDTO)))
@@ -89,23 +82,13 @@ namespace ToDoList_API.Controllers
         }
 
         [HttpDelete("{userId}")]
+        [ServiceFilter(typeof(ValidateUserIdAttribute))]
         public async Task<IActionResult> Delete([FromRoute] Guid userId, [FromBody] DeleteUserDTO deleteUserDto)
         {
-            if (userId != deleteUserDto.Id || GetUserIdFromToken() != deleteUserDto.Id.ToString())
-            {
-                return BadRequest(new BadRequestError("Invalid user id"));
-            }
-
             var errors = await _userService.DeleteAsync(deleteUserDto);
             return errors.Any()
                 ? BadRequest(new IdentityBadRequestError(errors, nameof(DeleteUserDTO)))
                 : NoContent();
-        }
-
-        private string GetUserIdFromToken()
-        {
-            var idClaim = HttpContext.User.Claims.FirstOrDefault(claim => claim.Type == "userId");
-            return idClaim?.Value ?? string.Empty;
         }
     }
 }

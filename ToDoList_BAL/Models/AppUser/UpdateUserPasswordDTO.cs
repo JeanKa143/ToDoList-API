@@ -2,7 +2,7 @@
 
 namespace ToDoList_BAL.Models.AppUser
 {
-    public class UpdateUserPasswordDTO : IModel<Guid>
+    public class UpdateUserPasswordDTO : IModelDTO<Guid>
     {
         [Required]
         public Guid Id { get; set; } = Guid.Empty;

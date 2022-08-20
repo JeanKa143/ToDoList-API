@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using ToDoList_API.Errors;
 using ToDoList_BAL.Models;
@@ -7,7 +7,7 @@ using ToDoList_BAL.Services;
 
 namespace ToDoList_API.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/account")]
     [ApiController]
     [Authorize]
     public class AccountController : ControllerBase
@@ -47,18 +47,23 @@ namespace ToDoList_API.Controllers
             return Ok(authDto);
         }
 
-        [HttpPost("refresh-token")]
+        [HttpPost("{userId}/refresh-token")]
         [AllowAnonymous]
-        public async Task<ActionResult<AuthDTO>> RefreshToken([FromBody] AuthDTO authDto)
+        public async Task<ActionResult<AuthDTO>> RefreshToken([FromRoute] string userId, [FromBody] AuthDTO authDto)
         {
+            if (userId != authDto.UserId)
+            {
+                return BadRequest(new BadRequestError("Invalid user id"));
+            }
+
             var newAuthDto = await _authService.RefreshUserTokenAsync(authDto);
             return Ok(newAuthDto);
         }
 
-        [HttpPut]
-        public async Task<IActionResult> Put([FromBody] UpdateUserDTO updateUserDto)
+        [HttpPut("{userId}")]
+        public async Task<IActionResult> Put([FromRoute] string userId, [FromBody] UpdateUserDTO updateUserDto)
         {
-            if (GetUserIdFromToken() != updateUserDto.Id)
+            if (userId != updateUserDto.Id || GetUserIdFromToken() != updateUserDto.Id)
             {
                 return BadRequest(new BadRequestError("Invalid user id"));
             }
@@ -69,10 +74,10 @@ namespace ToDoList_API.Controllers
                 : NoContent();
         }
 
-        [HttpPut("update-password")]
-        public async Task<IActionResult> UpdatePassword([FromBody] UpdatePasswordDTO updatePasswordDto)
+        [HttpPut("{userId}/update-password")]
+        public async Task<IActionResult> UpdatePassword([FromRoute] string userId, [FromBody] UpdatePasswordDTO updatePasswordDto)
         {
-            if (GetUserIdFromToken() != updatePasswordDto.UserId)
+            if (userId != updatePasswordDto.UserId || GetUserIdFromToken() != updatePasswordDto.UserId)
             {
                 return BadRequest(new BadRequestError("Invalid user id"));
             }
@@ -83,10 +88,10 @@ namespace ToDoList_API.Controllers
                 : NoContent();
         }
 
-        [HttpDelete]
-        public async Task<IActionResult> Delete([FromBody] DeleteUserDTO deleteUserDto)
+        [HttpDelete("{userId}")]
+        public async Task<IActionResult> Delete([FromRoute] string userId, [FromBody] DeleteUserDTO deleteUserDto)
         {
-            if (GetUserIdFromToken() != deleteUserDto.Id)
+            if (userId != deleteUserDto.Id || GetUserIdFromToken() != deleteUserDto.Id)
             {
                 return BadRequest(new BadRequestError("Invalid user id"));
             }

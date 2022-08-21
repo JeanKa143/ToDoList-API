@@ -9,7 +9,6 @@ using ToDoList_API.Errors;
 using ToDoList_API.Filters;
 using ToDoList_API.Middlewares;
 using ToDoList_BAL.Services;
-using ToDoLIst_DAL.Auth;
 using ToDoLIst_DAL.Contracts;
 using ToDoLIst_DAL.Data;
 using ToDoLIst_DAL.Entities;
@@ -63,10 +62,8 @@ builder.Services.AddSwaggerGen(options =>
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
 builder.Services.AddScoped<IUserRepository, UserRepository>();
-builder.Services.AddScoped<IAuthManager, AuthManager>();
 
 builder.Services.AddScoped<UserService>();
-builder.Services.AddScoped<AuthService>();
 
 builder.Services.AddScoped<ValidateUserIdAttribute>();
 

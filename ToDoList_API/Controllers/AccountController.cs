@@ -2,8 +2,8 @@
 using Microsoft.AspNetCore.Mvc;
 using ToDoList_API.Errors;
 using ToDoList_API.Filters;
-using ToDoList_BAL.Models;
 using ToDoList_BAL.Models.AppUser;
+using ToDoList_BAL.Models.Auth;
 using ToDoList_BAL.Services;
 
 namespace ToDoList_API.Controllers
@@ -14,12 +14,10 @@ namespace ToDoList_API.Controllers
     public class AccountController : ControllerBase
     {
         private readonly UserService _userService;
-        private readonly AuthService _authService;
 
-        public AccountController(UserService userService, AuthService authService)
+        public AccountController(UserService userService)
         {
             _userService = userService;
-            _authService = authService;
         }
 
         [HttpGet("{userId}")]
@@ -44,7 +42,7 @@ namespace ToDoList_API.Controllers
         [AllowAnonymous]
         public async Task<ActionResult<AuthDTO>> Login([FromBody] LoginDTO loginDto)
         {
-            var authDto = await _authService.LoginAsync(loginDto);
+            var authDto = await _userService.LoginAsync(loginDto);
             return Ok(authDto);
         }
 
@@ -57,7 +55,7 @@ namespace ToDoList_API.Controllers
                 return BadRequest(new BadRequestError("Invalid user id"));
             }
 
-            var newAuthDto = await _authService.RefreshUserTokenAsync(authDto);
+            var newAuthDto = await _userService.RefreshJwtAsync(authDto);
             return Ok(newAuthDto);
         }
 

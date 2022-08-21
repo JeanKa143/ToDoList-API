@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Identity;
+using System.Security.Claims;
 using ToDoLIst_DAL.Contracts;
 using ToDoLIst_DAL.Entities;
 
@@ -19,8 +20,13 @@ namespace ToDoLIst_DAL.Repositories
             return result.Errors;
         }
 
-        public async Task<AppUser?> GetByIdAsync(string id)
+        public async Task<AppUser?> GetByIdAsync(string? id)
         {
+            if (id is null)
+            {
+                return null;
+            }
+
             return await _userManager.FindByIdAsync(id);
         }
 
@@ -51,6 +57,46 @@ namespace ToDoLIst_DAL.Repositories
         public async Task<bool> CheckPasswordAsync(AppUser user, string password)
         {
             return await _userManager.CheckPasswordAsync(user, password);
+        }
+
+        public async Task<AppUser?> GetByEmailAsync(string? email)
+        {
+            if (email is null)
+            {
+                return null;
+            }
+
+            return await _userManager.FindByEmailAsync(email);
+        }
+
+        public async Task<IEnumerable<Claim>> GetClaimsAsync(AppUser user)
+        {
+            var userClaims = await _userManager.GetClaimsAsync(user);
+            var roles = await _userManager.GetRolesAsync(user);
+            var roleClaims = roles.Select(r => new Claim(ClaimTypes.Role, r)).ToList();
+
+            return userClaims.Union(roleClaims);
+        }
+
+        public async Task<bool> VerifyTokenAsync(AppUser user, string token, string provider, string purpose)
+        {
+            var isValidToken = await _userManager.VerifyUserTokenAsync(user, provider, purpose, token);
+
+            if (!isValidToken)
+            {
+                await _userManager.UpdateSecurityStampAsync(user);
+            }
+
+            return isValidToken;
+        }
+
+        public async Task<string> CreateTokenAsync(AppUser user, string provider, string purpose)
+        {
+            await _userManager.RemoveAuthenticationTokenAsync(user, provider, purpose);
+            var newToken = await _userManager.GenerateUserTokenAsync(user, provider, purpose);
+            await _userManager.SetAuthenticationTokenAsync(user, provider, purpose, newToken);
+
+            return newToken;
         }
     }
 }

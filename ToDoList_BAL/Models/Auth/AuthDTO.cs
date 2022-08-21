@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace ToDoList_BAL.Models
+namespace ToDoList_BAL.Models.Auth
 {
     public class AuthDTO
     {

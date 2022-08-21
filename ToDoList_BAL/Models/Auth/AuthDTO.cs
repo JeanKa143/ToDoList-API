@@ -2,7 +2,7 @@
 
 namespace ToDoList_BAL.Models.Auth
 {
-    public class AuthDTO
+    public class AuthDto
     {
         [Required]
         public Guid UserId { get; set; } = Guid.Empty;

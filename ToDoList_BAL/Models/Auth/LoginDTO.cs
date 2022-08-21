@@ -2,7 +2,7 @@
 
 namespace ToDoList_BAL.Models.Auth
 {
-    public class LoginDTO
+    public class LoginDto
     {
         [Required, EmailAddress]
         public string Email { get; set; } = string.Empty;

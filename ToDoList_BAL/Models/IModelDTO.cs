@@ -1,6 +1,6 @@
 ﻿namespace ToDoList_BAL.Models
 {
-    public interface IModelDTO<T>
+    public interface IModelDto<T>
     {
         public T Id { get; set; }
     }

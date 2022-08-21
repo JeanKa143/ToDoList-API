@@ -21,7 +21,7 @@ namespace ToDoList_API.Controllers
         }
 
         [HttpGet("{userId}")]
-        public async Task<ActionResult<UserDTO>> Get([FromRoute] Guid userId)
+        public async Task<ActionResult<UserDto>> Get([FromRoute] Guid userId)
         {
             var user = await _userService.GetByIdAsync(userId);
             return Ok(user);
@@ -29,18 +29,18 @@ namespace ToDoList_API.Controllers
 
         [HttpPost]
         [AllowAnonymous]
-        public async Task<IActionResult> Register([FromBody] CreateUserDTO createUserDto)
+        public async Task<IActionResult> Register([FromBody] CreateUserDto createUserDto)
         {
             var errors = await _userService.AddAsync(createUserDto);
 
             return errors.Any()
-                ? BadRequest(new IdentityBadRequestError(errors, nameof(CreateUserDTO)))
+                ? BadRequest(new IdentityBadRequestError(errors, nameof(CreateUserDto)))
                 : NoContent();
         }
 
         [HttpPost("login")]
         [AllowAnonymous]
-        public async Task<ActionResult<AuthDTO>> Login([FromBody] LoginDTO loginDto)
+        public async Task<ActionResult<AuthDto>> Login([FromBody] LoginDto loginDto)
         {
             var authDto = await _userService.LoginAsync(loginDto);
             return Ok(authDto);
@@ -48,7 +48,7 @@ namespace ToDoList_API.Controllers
 
         [HttpPost("{userId}/refresh-token")]
         [AllowAnonymous]
-        public async Task<ActionResult<AuthDTO>> RefreshToken([FromRoute] Guid userId, [FromBody] AuthDTO authDto)
+        public async Task<ActionResult<AuthDto>> RefreshToken([FromRoute] Guid userId, [FromBody] AuthDto authDto)
         {
             if (userId != authDto.UserId)
             {
@@ -61,31 +61,31 @@ namespace ToDoList_API.Controllers
 
         [HttpPut("{userId}")]
         [ServiceFilter(typeof(ValidateUserIdAttribute))]
-        public async Task<IActionResult> Put([FromRoute] Guid userId, [FromBody] UpdateUserDTO updateUserDto)
+        public async Task<IActionResult> Put([FromRoute] Guid userId, [FromBody] UpdateUserDto updateUserDto)
         {
             var errors = await _userService.UpdateAsync(updateUserDto);
             return errors.Any()
-                ? BadRequest(new IdentityBadRequestError(errors, nameof(UpdateUserDTO)))
+                ? BadRequest(new IdentityBadRequestError(errors, nameof(UpdateUserDto)))
                 : NoContent();
         }
 
         [HttpPut("{userId}/update-password")]
         [ServiceFilter(typeof(ValidateUserIdAttribute))]
-        public async Task<IActionResult> UpdatePassword([FromRoute] Guid userId, [FromBody] UpdateUserPasswordDTO updatePasswordDto)
+        public async Task<IActionResult> UpdatePassword([FromRoute] Guid userId, [FromBody] UpdateUserPasswordDto updatePasswordDto)
         {
             var errors = await _userService.UpdatePasswordAsync(updatePasswordDto);
             return errors.Any()
-                ? BadRequest(new IdentityBadRequestError(errors, nameof(UpdateUserPasswordDTO)))
+                ? BadRequest(new IdentityBadRequestError(errors, nameof(UpdateUserPasswordDto)))
                 : NoContent();
         }
 
         [HttpDelete("{userId}")]
         [ServiceFilter(typeof(ValidateUserIdAttribute))]
-        public async Task<IActionResult> Delete([FromRoute] Guid userId, [FromBody] DeleteUserDTO deleteUserDto)
+        public async Task<IActionResult> Delete([FromRoute] Guid userId, [FromBody] DeleteUserDto deleteUserDto)
         {
             var errors = await _userService.DeleteAsync(deleteUserDto);
             return errors.Any()
-                ? BadRequest(new IdentityBadRequestError(errors, nameof(DeleteUserDTO)))
+                ? BadRequest(new IdentityBadRequestError(errors, nameof(DeleteUserDto)))
                 : NoContent();
         }
     }

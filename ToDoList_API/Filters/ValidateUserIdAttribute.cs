@@ -10,7 +10,7 @@ namespace ToDoList_API.Filters
         public void OnActionExecuting(ActionExecutingContext context)
         {
             Guid? routeUserId = context.ActionArguments.SingleOrDefault(p => p.Value is Guid).Value as Guid?;
-            IModelDTO<Guid>? modelDto = context.ActionArguments.SingleOrDefault(p => p.Value is IModelDTO<Guid>).Value as IModelDTO<Guid>;
+            IModelDto<Guid>? modelDto = context.ActionArguments.SingleOrDefault(p => p.Value is IModelDto<Guid>).Value as IModelDto<Guid>;
             var tokenUserId = GetUserIdFromToken(context.HttpContext);
 
             if (routeUserId is null || modelDto is null || tokenUserId == Guid.Empty)

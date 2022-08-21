@@ -16,13 +16,13 @@ namespace ToDoList_API.Errors
 
             switch (modelClassName)
             {
-                case nameof(CreateUserDTO):
-                    AddErrorsToDictionary(dictionary, nameof(CreateUserDTO.Email), GetUserNameAndEmailErrors(errors));
-                    AddErrorsToDictionary(dictionary, nameof(CreateUserDTO.Password), GetNewPasswordErrors(errors));
+                case nameof(CreateUserDto):
+                    AddErrorsToDictionary(dictionary, nameof(CreateUserDto.Email), GetUserNameAndEmailErrors(errors));
+                    AddErrorsToDictionary(dictionary, nameof(CreateUserDto.Password), GetNewPasswordErrors(errors));
                     break;
-                case nameof(UpdateUserPasswordDTO):
-                    AddErrorsToDictionary(dictionary, nameof(UpdateUserPasswordDTO.OldPassword), GetOldPasswordErrors(errors));
-                    AddErrorsToDictionary(dictionary, nameof(UpdateUserPasswordDTO.NewPassword), GetNewPasswordErrors(errors));
+                case nameof(UpdateUserPasswordDto):
+                    AddErrorsToDictionary(dictionary, nameof(UpdateUserPasswordDto.OldPassword), GetOldPasswordErrors(errors));
+                    AddErrorsToDictionary(dictionary, nameof(UpdateUserPasswordDto.NewPassword), GetNewPasswordErrors(errors));
                     break;
                 default:
                     break;

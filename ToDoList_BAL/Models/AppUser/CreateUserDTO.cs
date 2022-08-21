@@ -2,7 +2,7 @@
 
 namespace ToDoList_BAL.Models.AppUser
 {
-    public class CreateUserDTO : BaseUserDTO
+    public class CreateUserDto : BaseUserDto
     {
         [Required, EmailAddress]
         public string Email { get; set; } = string.Empty;

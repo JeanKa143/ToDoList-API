@@ -27,7 +27,7 @@ namespace ToDoList_BAL.Services
             _configuration = configuration;
         }
 
-        public async Task<IEnumerable<IdentityError>> AddAsync(CreateUserDTO createUserDto)
+        public async Task<IEnumerable<IdentityError>> AddAsync(CreateUserDto createUserDto)
         {
             if (createUserDto.Password != createUserDto.ConfirmPassword)
             {
@@ -40,13 +40,13 @@ namespace ToDoList_BAL.Services
             return errors;
         }
 
-        public async Task<UserDTO> GetByIdAsync(Guid id)
+        public async Task<UserDto> GetByIdAsync(Guid id)
         {
             var user = await GetUserById(id);
-            return _mapper.Map<UserDTO>(user);
+            return _mapper.Map<UserDto>(user);
         }
 
-        public async Task<IEnumerable<IdentityError>> UpdateAsync(UpdateUserDTO updateUserDto)
+        public async Task<IEnumerable<IdentityError>> UpdateAsync(UpdateUserDto updateUserDto)
         {
             var user = await GetUserById(updateUserDto.Id);
             user = _mapper.Map(updateUserDto, user);
@@ -55,7 +55,7 @@ namespace ToDoList_BAL.Services
             return errors;
         }
 
-        public async Task<IEnumerable<IdentityError>> UpdatePasswordAsync(UpdateUserPasswordDTO updatePasswordDto)
+        public async Task<IEnumerable<IdentityError>> UpdatePasswordAsync(UpdateUserPasswordDto updatePasswordDto)
         {
             var user = await GetUserById(updatePasswordDto.Id);
             var errors = await _userRepository.UpdatePasswordAsync(user, updatePasswordDto.OldPassword, updatePasswordDto.NewPassword);
@@ -63,7 +63,7 @@ namespace ToDoList_BAL.Services
             return errors;
         }
 
-        public async Task<IEnumerable<IdentityError>> DeleteAsync(DeleteUserDTO deleteUserDto)
+        public async Task<IEnumerable<IdentityError>> DeleteAsync(DeleteUserDto deleteUserDto)
         {
             var user = await GetUserById(deleteUserDto.Id);
             var isValidPassword = await _userRepository.CheckPasswordAsync(user, deleteUserDto.Password);
@@ -78,7 +78,7 @@ namespace ToDoList_BAL.Services
         }
 
 
-        public async Task<AuthDTO> LoginAsync(LoginDTO loginDto)
+        public async Task<AuthDto> LoginAsync(LoginDto loginDto)
         {
             var user = await _userRepository.GetByEmailAsync(loginDto.Email);
 
@@ -87,7 +87,7 @@ namespace ToDoList_BAL.Services
                 throw new LoginException();
             }
 
-            return new AuthDTO
+            return new AuthDto
             {
                 UserId = Guid.Parse(user.Id),
                 Token = await CreateJwt(user),
@@ -95,7 +95,7 @@ namespace ToDoList_BAL.Services
             };
         }
 
-        public async Task<AuthDTO?> RefreshJwtAsync(AuthDTO authDto)
+        public async Task<AuthDto?> RefreshJwtAsync(AuthDto authDto)
         {
             var jwtSecurityTokenHandler = new JwtSecurityTokenHandler();
             var tokenContent = jwtSecurityTokenHandler.ReadJwtToken(authDto.Token);
@@ -115,7 +115,7 @@ namespace ToDoList_BAL.Services
                 throw new BadRequestException("Invalid refresh token");
             }
 
-            return new AuthDTO
+            return new AuthDto
             {
                 UserId = Guid.Parse(user.Id),
                 Token = await CreateJwt(user),

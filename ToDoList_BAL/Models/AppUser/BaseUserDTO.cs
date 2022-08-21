@@ -2,7 +2,7 @@
 
 namespace ToDoList_BAL.Models.AppUser
 {
-    public class BaseUserDTO
+    public class BaseUserDto
     {
         [StringLength(100)]
         public string? FirstName { get; set; }

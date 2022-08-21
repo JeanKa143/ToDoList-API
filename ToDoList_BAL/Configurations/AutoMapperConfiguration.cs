@@ -8,11 +8,11 @@ namespace ToDoList_BAL.Configurations
     {
         public AutoMapperConfiguration()
         {
-            CreateMap<AppUser, UserDTO>();
+            CreateMap<AppUser, UserDto>();
 
-            CreateMap<CreateUserDTO, AppUser>()
+            CreateMap<CreateUserDto, AppUser>()
                 .ForMember(d => d.UserName, options => options.MapFrom(s => s.Email));
-            CreateMap<UpdateUserDTO, AppUser>();
+            CreateMap<UpdateUserDto, AppUser>();
         }
     }
 }

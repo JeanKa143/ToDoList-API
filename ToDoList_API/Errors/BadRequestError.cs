@@ -28,10 +28,12 @@ namespace ToDoList_API.Errors
 
         private static Dictionary<string, IEnumerable<string>>? ParseModelStateToDictionary(ModelStateDictionary modelState)
         {
-            var errors = modelState.AsEnumerable().ToDictionary(
-                kvp => kvp.Key,
-                kvp => kvp.Value!.Errors.Select(e => e.ErrorMessage).AsEnumerable()
-            );
+            var errors = modelState
+                .Where(kvp => kvp.Value!.Errors.Any())
+                .AsEnumerable()
+                .ToDictionary(
+                    kvp => kvp.Key,
+                    kvp => kvp.Value!.Errors.Select(e => e.ErrorMessage).AsEnumerable());
 
             return errors;
         }

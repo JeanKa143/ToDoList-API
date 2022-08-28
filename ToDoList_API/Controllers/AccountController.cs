@@ -8,9 +8,10 @@ using ToDoList_BAL.Services;
 
 namespace ToDoList_API.Controllers
 {
-    [Route("api/account")]
     [ApiController]
     [Authorize]
+    [ApiConventionType(typeof(AppConventions))]
+    [Route("api/account")]
     public class AccountController : ControllerBase
     {
         private readonly UserService _userService;
@@ -27,8 +28,11 @@ namespace ToDoList_API.Controllers
             return Ok(user);
         }
 
-        [HttpPost]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(typeof(BadRequestError), StatusCodes.Status400BadRequest)]
+        [ProducesDefaultResponseType(typeof(InternalServerError))]
         [AllowAnonymous]
+        [HttpPost]
         public async Task<IActionResult> Register([FromBody] CreateUserDto createUserDto)
         {
             var errors = await _userService.AddAsync(createUserDto);
@@ -38,16 +42,23 @@ namespace ToDoList_API.Controllers
                 : NoContent();
         }
 
-        [HttpPost("login")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(BadRequestError), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(UnauthorizedError), StatusCodes.Status401Unauthorized)]
+        [ProducesDefaultResponseType(typeof(InternalServerError))]
         [AllowAnonymous]
+        [HttpPost("login")]
         public async Task<ActionResult<AuthDto>> Login([FromBody] LoginDto loginDto)
         {
             var authDto = await _userService.LoginAsync(loginDto);
             return Ok(authDto);
         }
 
-        [HttpPost("{userId}/refresh-token")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(BadRequestError), StatusCodes.Status400BadRequest)]
+        [ProducesDefaultResponseType(typeof(InternalServerError))]
         [AllowAnonymous]
+        [HttpPost("{userId}/refresh-token")]
         public async Task<ActionResult<AuthDto>> RefreshToken([FromRoute] Guid userId, [FromBody] AuthDto authDto)
         {
             if (userId != authDto.UserId)
@@ -86,7 +97,7 @@ namespace ToDoList_API.Controllers
             var errors = await _userService.DeleteAsync(deleteUserDto);
             return errors.Any()
                 ? BadRequest(new IdentityBadRequestError(errors, nameof(DeleteUserDto)))
-                : NoContent();
+                : Ok();
         }
     }
 }

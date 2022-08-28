@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using Newtonsoft.Json;
 using System.Text;
 using ToDoList_API.Errors;
 using ToDoList_API.Filters;
@@ -71,16 +72,35 @@ builder.Services.AddAuthentication(options =>
 {
     options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
     options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-}).AddJwtBearer(options => options.TokenValidationParameters = new TokenValidationParameters
+}).AddJwtBearer(options =>
 {
-    ValidateIssuerSigningKey = true,
-    ValidateIssuer = true,
-    ValidateAudience = true,
-    ValidateLifetime = true,
-    ClockSkew = TimeSpan.Zero,
-    ValidIssuer = builder.Configuration["JwtSettings:Issuer"],
-    ValidAudience = builder.Configuration["JwtSettings:Audience"],
-    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["JwtSettings:Key"]))
+    options.TokenValidationParameters = new TokenValidationParameters
+    {
+        ValidateIssuerSigningKey = true,
+        ValidateIssuer = true,
+        ValidateAudience = true,
+        ValidateLifetime = true,
+        ClockSkew = TimeSpan.Zero,
+        ValidIssuer = builder.Configuration["JwtSettings:Issuer"],
+        ValidAudience = builder.Configuration["JwtSettings:Audience"],
+        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["JwtSettings:Key"]))
+    };
+
+    options.Events = new JwtBearerEvents
+    {
+        OnChallenge = context =>
+        {
+            context.Response.OnStarting(async () =>
+            {
+                string response = JsonConvert.SerializeObject(new UnauthorizedError("Unauthorized user"));
+
+                context.Response.ContentType = "application/json";
+                await context.Response.WriteAsync(response);
+            });
+
+            return Task.CompletedTask;
+        }
+    };
 });
 
 builder.Services.AddControllers()

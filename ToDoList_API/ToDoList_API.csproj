@@ -4,7 +4,7 @@
     <TargetFramework>net6.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
-	<IncludeOpenAPIAnalyzers>true</IncludeOpenAPIAnalyzers>
+    <IncludeOpenAPIAnalyzers>true</IncludeOpenAPIAnalyzers>
     <UserSecretsId>17d929b5-b23f-4367-9d8d-9bd882a3e8cd</UserSecretsId>
   </PropertyGroup>
 

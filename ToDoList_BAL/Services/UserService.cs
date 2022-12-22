@@ -29,11 +29,6 @@ namespace ToDoList_BAL.Services
 
         public async Task<IEnumerable<IdentityError>> AddAsync(CreateUserDto createUserDto)
         {
-            if (createUserDto.Password != createUserDto.ConfirmPassword)
-            {
-                throw new BadRequestException("Passwords do not match");
-            }
-
             var newUser = _mapper.Map<AppUser>(createUserDto);
             var errors = await _userRepository.AddAsync(newUser, createUserDto.Password);
 
@@ -95,7 +90,7 @@ namespace ToDoList_BAL.Services
             };
         }
 
-        public async Task<AuthDto?> RefreshJwtAsync(AuthDto authDto)
+        public async Task<AuthDto> RefreshJwtAsync(AuthDto authDto)
         {
             var jwtSecurityTokenHandler = new JwtSecurityTokenHandler();
             var tokenContent = jwtSecurityTokenHandler.ReadJwtToken(authDto.Token);

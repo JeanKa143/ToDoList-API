@@ -97,7 +97,7 @@ namespace ToDoList_API.Controllers
             var errors = await _userService.DeleteAsync(deleteUserDto);
             return errors.Any()
                 ? BadRequest(new IdentityBadRequestError(errors, nameof(DeleteUserDto)))
-                : Ok();
+                : NoContent();
         }
     }
 }

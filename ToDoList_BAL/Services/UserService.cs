@@ -30,57 +30,54 @@ namespace ToDoList_BAL.Services
         public async Task<IEnumerable<IdentityError>> AddAsync(CreateUserDto createUserDto)
         {
             var newUser = _mapper.Map<AppUser>(createUserDto);
-            var errors = await _userRepository.AddAsync(newUser, createUserDto.Password);
+            IEnumerable<IdentityError> errors = await _userRepository.AddAsync(newUser, createUserDto.Password);
 
             return errors;
         }
 
         public async Task<UserDto> GetByIdAsync(Guid id)
         {
-            var user = await GetUserById(id);
+            AppUser user = await GetUserById(id);
             return _mapper.Map<UserDto>(user);
         }
 
         public async Task<IEnumerable<IdentityError>> UpdateAsync(UpdateUserDto updateUserDto)
         {
-            var user = await GetUserById(updateUserDto.Id);
+            AppUser user = await GetUserById(updateUserDto.Id);
             user = _mapper.Map(updateUserDto, user);
 
-            var errors = await _userRepository.UpdateAsync(user);
+            IEnumerable<IdentityError> errors = await _userRepository.UpdateAsync(user);
             return errors;
         }
 
         public async Task<IEnumerable<IdentityError>> UpdatePasswordAsync(UpdateUserPasswordDto updatePasswordDto)
         {
-            var user = await GetUserById(updatePasswordDto.Id);
-            var errors = await _userRepository.UpdatePasswordAsync(user, updatePasswordDto.OldPassword, updatePasswordDto.NewPassword);
+            AppUser user = await GetUserById(updatePasswordDto.Id);
+            IEnumerable<IdentityError> errors =
+                await _userRepository.UpdatePasswordAsync(user, updatePasswordDto.OldPassword, updatePasswordDto.NewPassword);
 
             return errors;
         }
 
         public async Task<IEnumerable<IdentityError>> DeleteAsync(DeleteUserDto deleteUserDto)
         {
-            var user = await GetUserById(deleteUserDto.Id);
-            var isValidPassword = await _userRepository.CheckPasswordAsync(user, deleteUserDto.Password);
+            AppUser user = await GetUserById(deleteUserDto.Id);
+            bool isValidPassword = await _userRepository.CheckPasswordAsync(user, deleteUserDto.Password);
 
             if (!isValidPassword)
-            {
                 throw new BadRequestException("Invalid password");
-            }
 
-            var errors = await _userRepository.DeleteAsync(user);
+            IEnumerable<IdentityError> errors = await _userRepository.DeleteAsync(user);
             return errors;
         }
 
 
         public async Task<AuthDto> LoginAsync(LoginDto loginDto)
         {
-            var user = await _userRepository.GetByEmailAsync(loginDto.Email);
+            AppUser? user = await _userRepository.GetByEmailAsync(loginDto.Email);
 
             if (user is null || !await _userRepository.CheckPasswordAsync(user, loginDto.Password))
-            {
                 throw new LoginException();
-            }
 
             return new AuthDto
             {
@@ -94,21 +91,17 @@ namespace ToDoList_BAL.Services
         {
             var jwtSecurityTokenHandler = new JwtSecurityTokenHandler();
             var tokenContent = jwtSecurityTokenHandler.ReadJwtToken(authDto.Token);
-            var userId = tokenContent.Claims.FirstOrDefault(c => c.Type == "userId")?.Value;
-            var user = await _userRepository.GetByIdAsync(userId);
+            string? userId = tokenContent.Claims.FirstOrDefault(c => c.Type == "userId")?.Value;
+            AppUser? user = await _userRepository.GetByIdAsync(userId);
 
             if (user is null)
-            {
                 throw new BadRequestException("Invalid user id");
-            }
 
-            var isValidRefreshToken = await _userRepository.VerifyTokenAsync(user, authDto.RefreshToken,
+            bool isValidRefreshToken = await _userRepository.VerifyTokenAsync(user, authDto.RefreshToken,
                 TokenProviderOptions.DefaultTokenProvider, TokenPurposeOptions.RefreshToken);
 
             if (!isValidRefreshToken)
-            {
                 throw new BadRequestException("Invalid refresh token");
-            }
 
             return new AuthDto
             {
@@ -121,12 +114,10 @@ namespace ToDoList_BAL.Services
 
         private async Task<AppUser> GetUserById(Guid id)
         {
-            var user = await _userRepository.GetByIdAsync(id.ToString());
+            AppUser? user = await _userRepository.GetByIdAsync(id.ToString());
 
             if (user is null)
-            {
                 throw new NotFoundException("User", id);
-            }
 
             return user;
         }

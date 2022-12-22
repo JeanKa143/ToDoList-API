@@ -27,12 +27,10 @@ namespace ToDoLIst_DAL.Repositories
 
         public async Task DeleteAsync(int id)
         {
-            var entity = await GetAsync(id);
+            T? entity = await GetAsync(id);
 
             if (entity is null)
-            {
                 throw new NullReferenceException();
-            }
 
             _context.Remove(entity);
             await _context.SaveChangesAsync();

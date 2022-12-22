@@ -14,14 +14,10 @@ namespace ToDoList_API.Filters
             var tokenUserId = GetUserIdFromToken(context.HttpContext);
 
             if (routeUserId is null || modelDto is null || tokenUserId == Guid.Empty)
-            {
                 return;
-            }
 
             if (routeUserId != modelDto.Id || routeUserId != tokenUserId)
-            {
                 context.Result = new BadRequestObjectResult(new BadRequestError("Invalid user id"));
-            }
         }
 
         public void OnActionExecuted(ActionExecutedContext context)

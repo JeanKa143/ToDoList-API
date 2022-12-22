@@ -29,7 +29,7 @@ namespace ToDoList_API.Middlewares
 
         private Task HandleExceptionAsync(HttpContext context, Exception ex)
         {
-            var apiError = CreateApiError(context, ex);
+            ApiError apiError = CreateApiError(context, ex);
             string response = JsonConvert.SerializeObject(apiError);
 
             context.Response.ContentType = "application/json";

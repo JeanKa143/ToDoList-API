@@ -1,4 +1,3 @@
-using Microsoft.EntityFrameworkCore;
 using ToDoList_API.Extensions;
 using ToDoList_API.Filters;
 using ToDoList_API.Middlewares;
@@ -7,7 +6,6 @@ using ToDoLIst_DAL.Contracts;
 using ToDoLIst_DAL.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
-var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 
 // Add services to the container.
 builder.Services.ConfigureDbContext(builder.Configuration);

@@ -16,41 +16,37 @@ namespace ToDoLIst_DAL.Repositories
 
         public async Task<IEnumerable<IdentityError>> DeleteAsync(AppUser user)
         {
-            var result = await _userManager.DeleteAsync(user);
+            IdentityResult result = await _userManager.DeleteAsync(user);
             return result.Errors;
         }
 
         public async Task<AppUser?> GetByIdAsync(string? id)
         {
             if (id is null)
-            {
                 return null;
-            }
 
             return await _userManager.FindByIdAsync(id);
         }
 
         public async Task<IEnumerable<IdentityError>> AddAsync(AppUser newUser, string userPassword)
         {
-            var result = await _userManager.CreateAsync(newUser, userPassword);
+            IdentityResult result = await _userManager.CreateAsync(newUser, userPassword);
 
             if (result.Succeeded)
-            {
                 await _userManager.AddToRoleAsync(newUser, "User");
-            }
 
             return result.Errors;
         }
 
         public async Task<IEnumerable<IdentityError>> UpdateAsync(AppUser user)
         {
-            var result = await _userManager.UpdateAsync(user);
+            IdentityResult result = await _userManager.UpdateAsync(user);
             return result.Errors;
         }
 
         public async Task<IEnumerable<IdentityError>> UpdatePasswordAsync(AppUser user, string oldPassword, string newPassword)
         {
-            var result = await _userManager.ChangePasswordAsync(user, oldPassword, newPassword);
+            IdentityResult result = await _userManager.ChangePasswordAsync(user, oldPassword, newPassword);
             return result.Errors;
         }
 
@@ -62,9 +58,7 @@ namespace ToDoLIst_DAL.Repositories
         public async Task<AppUser?> GetByEmailAsync(string? email)
         {
             if (email is null)
-            {
                 return null;
-            }
 
             return await _userManager.FindByEmailAsync(email);
         }
@@ -80,12 +74,10 @@ namespace ToDoLIst_DAL.Repositories
 
         public async Task<bool> VerifyTokenAsync(AppUser user, string token, string provider, string purpose)
         {
-            var isValidToken = await _userManager.VerifyUserTokenAsync(user, provider, purpose, token);
+            bool isValidToken = await _userManager.VerifyUserTokenAsync(user, provider, purpose, token);
 
             if (!isValidToken)
-            {
                 await _userManager.UpdateSecurityStampAsync(user);
-            }
 
             return isValidToken;
         }

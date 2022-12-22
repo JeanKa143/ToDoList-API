@@ -34,24 +34,20 @@ namespace ToDoList_API.Errors
         private static void AddErrorsToDictionary(Dictionary<string, IEnumerable<string>> dictionary, string key, IEnumerable<string> errors)
         {
             if (errors.Any())
-            {
                 dictionary.Add(key, errors);
-            }
         }
 
         private static IEnumerable<string> GetUserNameAndEmailErrors(IEnumerable<IdentityError> errors)
         {
             var userNameErrors = new List<string>();
 
-            foreach (var error in errors)
+            foreach (IdentityError error in errors)
             {
-                if (error.Code == nameof(IdentityErrorDescriber.DuplicateUserName)
-                    || error.Code == nameof(IdentityErrorDescriber.InvalidUserName)
-                    || error.Code == nameof(IdentityErrorDescriber.DuplicateEmail)
-                    || error.Code == nameof(IdentityErrorDescriber.InvalidEmail))
-                {
+                if (error.Code is (nameof(IdentityErrorDescriber.DuplicateUserName))
+                    or (nameof(IdentityErrorDescriber.InvalidUserName))
+                    or (nameof(IdentityErrorDescriber.DuplicateEmail))
+                    or (nameof(IdentityErrorDescriber.InvalidEmail)))
                     userNameErrors.Add(error.Description);
-                }
             }
 
             return userNameErrors;
@@ -61,13 +57,12 @@ namespace ToDoList_API.Errors
         {
             var userNameErrors = new List<string>();
 
-            foreach (var error in errors)
+            foreach (IdentityError error in errors)
             {
-                if (error.Code == nameof(IdentityErrorDescriber.DuplicateUserName) ||
-                    error.Code == nameof(IdentityErrorDescriber.InvalidUserName))
-                {
+                if (error.Code is (nameof(IdentityErrorDescriber.DuplicateUserName))
+                    or (nameof(IdentityErrorDescriber.InvalidUserName)))
                     userNameErrors.Add(error.Description);
-                }
+
             }
 
             return userNameErrors;
@@ -77,13 +72,12 @@ namespace ToDoList_API.Errors
         {
             var emailErrors = new List<string>();
 
-            foreach (var error in errors)
+            foreach (IdentityError error in errors)
             {
-                if (error.Code == nameof(IdentityErrorDescriber.DuplicateEmail)
-                    || error.Code == nameof(IdentityErrorDescriber.InvalidEmail))
-                {
+                if (error.Code is (nameof(IdentityErrorDescriber.DuplicateEmail))
+                    or (nameof(IdentityErrorDescriber.InvalidEmail)))
                     emailErrors.Add(error.Description);
-                }
+
             }
 
             return emailErrors;
@@ -93,17 +87,16 @@ namespace ToDoList_API.Errors
         {
             var passwordErrors = new List<string>();
 
-            foreach (var error in errors)
+            foreach (IdentityError error in errors)
             {
-                if (error.Code == nameof(IdentityErrorDescriber.PasswordRequiresDigit)
-                    || error.Code == nameof(IdentityErrorDescriber.PasswordRequiresLower)
-                    || error.Code == nameof(IdentityErrorDescriber.PasswordRequiresNonAlphanumeric)
-                    || error.Code == nameof(IdentityErrorDescriber.PasswordRequiresUniqueChars)
-                    || error.Code == nameof(IdentityErrorDescriber.PasswordRequiresUpper)
-                    || error.Code == nameof(IdentityErrorDescriber.PasswordTooShort))
-                {
+                if (error.Code is (nameof(IdentityErrorDescriber.PasswordRequiresDigit))
+                    or (nameof(IdentityErrorDescriber.PasswordRequiresLower))
+                    or (nameof(IdentityErrorDescriber.PasswordRequiresNonAlphanumeric))
+                    or (nameof(IdentityErrorDescriber.PasswordRequiresUniqueChars))
+                    or (nameof(IdentityErrorDescriber.PasswordRequiresUpper))
+                    or (nameof(IdentityErrorDescriber.PasswordTooShort)))
                     passwordErrors.Add(error.Description);
-                }
+
             }
 
             return passwordErrors;
@@ -113,12 +106,10 @@ namespace ToDoList_API.Errors
         {
             var passwordErrors = new List<string>();
 
-            foreach (var error in errors)
+            foreach (IdentityError error in errors)
             {
-                if (error.Code == nameof(IdentityErrorDescriber.PasswordMismatch))
-                {
+                if (error.Code is (nameof(IdentityErrorDescriber.PasswordMismatch)))
                     passwordErrors.Add(error.Description);
-                }
             }
 
             return passwordErrors;

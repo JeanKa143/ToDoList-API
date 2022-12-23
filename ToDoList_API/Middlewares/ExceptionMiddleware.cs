@@ -52,6 +52,9 @@ namespace ToDoList_API.Middlewares
                 case LoginException:
                     apiError = new UnauthorizedError(ex.Message);
                     break;
+                case ForbiddenException:
+                    apiError = new ForbiddenError(ex.Message);
+                    break;
                 default:
                     _logger.LogError(ex, "Something went wrong while processing {RequestPath}", context.Request.Path);
                     apiError = new InternalServerError("An unexpected error occurred");

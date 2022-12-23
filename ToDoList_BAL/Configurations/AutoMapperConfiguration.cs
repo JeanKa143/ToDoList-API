@@ -1,5 +1,7 @@
 ﻿using AutoMapper;
 using ToDoList_BAL.Models.AppUser;
+using ToDoList_BAL.Models.TaskList;
+using ToDoList_BAL.Models.TaskListGroup;
 using ToDoLIst_DAL.Entities;
 
 namespace ToDoList_BAL.Configurations
@@ -9,10 +11,19 @@ namespace ToDoList_BAL.Configurations
         public AutoMapperConfiguration()
         {
             CreateMap<AppUser, UserDto>();
-
+            CreateMap<UpdateUserDto, AppUser>();
             CreateMap<CreateUserDto, AppUser>()
                 .ForMember(d => d.UserName, options => options.MapFrom(s => s.Email));
-            CreateMap<UpdateUserDto, AppUser>();
+
+
+            CreateMap<TaskListGroup, TaskListGroupDto>();
+            CreateMap<TaskListGroup, DetailedTaskListGroupDto>();
+            CreateMap<CreateTaskListGroupDto, TaskListGroup>();
+            CreateMap<UpdateTaskListGroupDto, TaskListGroup>();
+            CreateMap<DeleteTaskListGroupDto, TaskListGroup>();
+
+
+            CreateMap<TaskList, TaskListDto>();
         }
     }
 }

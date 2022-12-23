@@ -17,9 +17,9 @@ namespace ToDoLIst_DAL.Data
             builder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
         }
 
-        public DbSet<TaskListGroup> Groups => Set<TaskListGroup>();
-        public DbSet<TaskList> TasksLists => Set<TaskList>();
-        public DbSet<TaskItem> TasksItems => Set<TaskItem>();
-        public DbSet<TaskStep> TasksSteps => Set<TaskStep>();
+        public DbSet<TaskListGroup> TaskListGroups => Set<TaskListGroup>();
+        public DbSet<TaskList> TaskLists => Set<TaskList>();
+        public DbSet<TaskItem> TaskItems => Set<TaskItem>();
+        public DbSet<TaskStep> TaskSteps => Set<TaskStep>();
     }
 }

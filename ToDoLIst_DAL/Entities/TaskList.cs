@@ -7,6 +7,7 @@ namespace ToDoLIst_DAL.Entities
         public int Id { get; set; }
         [StringLength(200)]
         public string Name { get; set; } = string.Empty;
+        public bool IsDefault { get; set; }
 
         public int GroupId { get; set; }
         public TaskListGroup? Group { get; set; }

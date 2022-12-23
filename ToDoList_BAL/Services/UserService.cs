@@ -30,8 +30,24 @@ namespace ToDoList_BAL.Services
         public async Task<IEnumerable<IdentityError>> AddAsync(CreateUserDto createUserDto)
         {
             var newUser = _mapper.Map<AppUser>(createUserDto);
-            IEnumerable<IdentityError> errors = await _userRepository.AddAsync(newUser, createUserDto.Password);
+            newUser.TaskListGroups = new HashSet<TaskListGroup>
+            {
+                new TaskListGroup
+                {
+                    Name = "Default",
+                    IsDefault = true,
+                    TaskLists = new HashSet<TaskList>
+                    {
+                        new TaskList
+                        {
+                            Name = "Default",
+                            IsDefault = true,
+                        }
+                    }
+                }
+            };
 
+            IEnumerable<IdentityError> errors = await _userRepository.AddAsync(newUser, createUserDto.Password);
             return errors;
         }
 

@@ -1,63 +1,27 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using System.Linq.Expressions;
 using ToDoLIst_DAL.Contracts;
 using ToDoLIst_DAL.Data;
 
 namespace ToDoLIst_DAL.Repositories
 {
-    public class Repository<T> : IRepository<T> where T : class
+    public abstract class Repository<T> : IRepository<T> where T : class
     {
-        private readonly AppDbContext _context;
+        protected AppDbContext AppDbContext { get; set; }
 
-        public Repository(AppDbContext context)
+        public Repository(AppDbContext appDbContext)
         {
-            _context = context;
+            AppDbContext = appDbContext;
         }
+        public IQueryable<T> FindAll() => AppDbContext.Set<T>().AsNoTracking();
 
-        public async Task<T> AddAsync(T entity)
-        {
-            await _context.AddAsync(entity);
-            await _context.SaveChangesAsync();
-            return entity;
-        }
+        public IQueryable<T> FindByCondition(Expression<Func<T, bool>> expression) =>
+            AppDbContext.Set<T>().Where(expression);
 
-        public async Task<int> CountAsync()
-        {
-            return await _context.Set<T>().CountAsync();
-        }
+        public void Create(T entity) => AppDbContext.Set<T>().Add(entity);
 
-        public async Task DeleteAsync(int id)
-        {
-            T? entity = await GetAsync(id);
+        public void Update(T entity) => AppDbContext.Set<T>().Update(entity);
 
-            if (entity is null)
-                throw new NullReferenceException();
-
-            _context.Remove(entity);
-            await _context.SaveChangesAsync();
-        }
-
-        public async Task<T?> GetAsync(int id)
-        {
-            return await _context.Set<T>().FindAsync(id);
-        }
-
-        public async Task<IEnumerable<T>> GetPagedAsync(int pageNumber, int pageSize)
-        {
-            var numbOfItemsToSkip = (pageNumber - 1) * pageSize;
-
-            var items = await _context.Set<T>()
-                .Skip(numbOfItemsToSkip)
-                .Take(pageSize)
-                .AsNoTracking()
-                .ToListAsync();
-
-            return items;
-        }
-
-        public Task UpdateAsync(T entity)
-        {
-            _context.Update(entity);
-            return _context.SaveChangesAsync();
-        }
+        public void Delete(T entity) => AppDbContext.Set<T>().Remove(entity);
     }
 }

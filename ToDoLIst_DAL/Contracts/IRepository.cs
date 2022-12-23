@@ -1,13 +1,13 @@
-﻿namespace ToDoLIst_DAL.Contracts
-{
-    public interface IRepository<T> where T : class
-    {
-        Task<T> AddAsync(T entity);
-        Task<T?> GetAsync(int id);
-        Task<IEnumerable<T>> GetPagedAsync(int pageNumber, int pageSize);
-        Task UpdateAsync(T entity);
-        Task DeleteAsync(int id);
+﻿using System.Linq.Expressions;
 
-        Task<int> CountAsync();
+namespace ToDoLIst_DAL.Contracts
+{
+    public interface IRepository<T>
+    {
+        IQueryable<T> FindAll();
+        IQueryable<T> FindByCondition(Expression<Func<T, bool>> expression);
+        void Create(T entity);
+        void Update(T entity);
+        void Delete(T entity);
     }
 }

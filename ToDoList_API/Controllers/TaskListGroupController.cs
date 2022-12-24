@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using ToDoList_API.Errors;
 using ToDoList_API.Filters;
 using ToDoList_BAL.Models.TaskListGroup;
 using ToDoList_BAL.Services;
@@ -49,17 +50,24 @@ namespace ToDoList_API.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<TaskListGroupDto>> Create([FromBody] CreateTaskListGroupDto createTaskListGroupDto)
+        public async Task<ActionResult<TaskListGroupDto>> Create([FromRoute] Guid userId, [FromBody] CreateTaskListGroupDto createTaskListGroupDto)
         {
+            if (!userId.Equals(createTaskListGroupDto.OwnerId))
+                return BadRequest(
+                    new BadRequestError("The owner id of the DTO cannot be different from the user id of the route"));
+
             TaskListGroupDto data = await _taskListGroupService.CreateAsync(createTaskListGroupDto);
-            return CreatedAtAction(nameof(Get), new { UserId = createTaskListGroupDto.OwnerId, Id = data.Id }, data);
+            return CreatedAtAction(nameof(Get), new { UserId = createTaskListGroupDto.OwnerId, data.Id }, data);
         }
 
         [HttpPut("{id}")]
         [ServiceFilter(typeof(ValidateDtoIdFilter<int>))]
-        //Todo: comprobar {userId} con updateTaskListGroupDto.OwnerId
-        public async Task<IActionResult> Update([FromBody] UpdateTaskListGroupDto updateTaskListGroupDto)
+        public async Task<IActionResult> Update([FromRoute] Guid userId, [FromBody] UpdateTaskListGroupDto updateTaskListGroupDto)
         {
+            if (!userId.Equals(updateTaskListGroupDto.OwnerId))
+                return BadRequest(
+                    new BadRequestError("The owner id of the DTO cannot be different from the user id of the route"));
+
             await _taskListGroupService.UpdateAsync(updateTaskListGroupDto);
             return NoContent();
         }

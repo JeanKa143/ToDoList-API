@@ -24,7 +24,7 @@ namespace ToDoList_BAL.Services
             if (entity is null)
                 throw new NotFoundException(nameof(TaskListGroup), taskListGroupId);
 
-            if (!entity.OwnerId.Equals(ownerId))
+            if (!entity.OwnerId.Equals(ownerId.ToString()))
                 throw new ForbiddenException(nameof(TaskListGroup), taskListGroupId);
 
             return _mapper.Map<TaskListGroupDto>(entity);
@@ -37,7 +37,7 @@ namespace ToDoList_BAL.Services
             if (entity is null)
                 throw new NotFoundException(nameof(TaskListGroup), taskListGroupId);
 
-            if (!entity.OwnerId.Equals(ownerId))
+            if (!entity.OwnerId.Equals(ownerId.ToString()))
                 throw new ForbiddenException(nameof(TaskListGroup), taskListGroupId);
 
             return _mapper.Map<DetailedTaskListGroupDto>(entity);
@@ -69,7 +69,7 @@ namespace ToDoList_BAL.Services
             if (entity is null)
                 throw new NotFoundException(nameof(TaskListGroup), updateTaskListGroupDto.Id);
 
-            if (!entity.OwnerId.Equals(updateTaskListGroupDto.OwnerId))
+            if (!entity.OwnerId.Equals(updateTaskListGroupDto.OwnerId.ToString()))
                 throw new ForbiddenException(nameof(TaskListGroup), updateTaskListGroupDto.Id);
 
             if (entity.IsDefault)
@@ -86,7 +86,7 @@ namespace ToDoList_BAL.Services
             if (entity is null)
                 throw new NotFoundException(nameof(TaskListGroup), deleteTaskListGroupDto.Id);
 
-            if (!entity.OwnerId.Equals(deleteTaskListGroupDto.OwnerId))
+            if (!entity.OwnerId.Equals(deleteTaskListGroupDto.OwnerId.ToString()))
                 throw new ForbiddenException(nameof(TaskListGroup), deleteTaskListGroupDto.Id);
 
             if (entity.IsDefault)

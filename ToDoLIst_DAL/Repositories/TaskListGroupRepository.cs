@@ -26,14 +26,14 @@ namespace ToDoLIst_DAL.Repositories
 
         public async Task<IEnumerable<TaskListGroup>> GetAllByOwnerIdAsync(Guid ownerId)
         {
-            return await FindByCondition(t => t.OwnerId.Equals(ownerId))
+            return await FindByCondition(t => t.OwnerId.Equals(ownerId.ToString()))
                 .AsNoTracking()
                 .ToListAsync();
         }
 
         public async Task<IEnumerable<TaskListGroup>> GetAllWithDetailsByOwnerIdAsync(Guid ownerId)
         {
-            return await FindByCondition(t => t.OwnerId.Equals(ownerId))
+            return await FindByCondition(t => t.OwnerId.Equals(ownerId.ToString()))
                 .Include(t => t.TaskLists)
                 .AsNoTracking()
                 .ToListAsync();

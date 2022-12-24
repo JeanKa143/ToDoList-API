@@ -97,7 +97,7 @@ namespace ToDoList_BAL.Services
 
             return new AuthDto
             {
-                UserId = Guid.Parse(user.Id),
+                Id = Guid.Parse(user.Id),
                 Token = await CreateJwt(user),
                 RefreshToken = await CreateRefreshToken(user)
             };
@@ -121,7 +121,7 @@ namespace ToDoList_BAL.Services
 
             return new AuthDto
             {
-                UserId = Guid.Parse(user.Id),
+                Id = Guid.Parse(user.Id),
                 Token = await CreateJwt(user),
                 RefreshToken = await CreateRefreshToken(user)
             };

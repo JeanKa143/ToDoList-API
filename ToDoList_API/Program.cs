@@ -22,7 +22,8 @@ builder.Services.AddScoped<ITaskListGroupRepository, TaskListGroupRepository>();
 builder.Services.AddScoped<UserService>();
 builder.Services.AddScoped<TaskListGroupService>();
 
-builder.Services.AddScoped<ValidateUserIdAttribute>();
+builder.Services.AddScoped<ValidateRouteUserIdFilter>();
+builder.Services.AddScoped(typeof(ValidateDtoIdFilter<>));
 
 builder.Services.ConfigureAuthentication(builder.Configuration);
 

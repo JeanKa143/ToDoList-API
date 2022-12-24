@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using ToDoList_API.Filters;
 using ToDoList_BAL.Models.TaskListGroup;
 using ToDoList_BAL.Services;
 
@@ -8,6 +9,7 @@ namespace ToDoList_API.Controllers
     [ApiController]
     [Authorize]
     [ApiConventionType(typeof(AppConventions))]
+    [ServiceFilter(typeof(ValidateRouteUserIdFilter))]
     [Route("api/user/{userId}/task-list-group")]
     public class TaskListGroupController : ControllerBase
     {
@@ -54,7 +56,8 @@ namespace ToDoList_API.Controllers
         }
 
         [HttpPut("{id}")]
-        //Todo: Comparar {id} con updateTaskListGroupDto.Id y comprobar {userId} con updateTaskListGroupDto.OwnerId
+        [ServiceFilter(typeof(ValidateDtoIdFilter<int>))]
+        //Todo: comprobar {userId} con updateTaskListGroupDto.OwnerId
         public async Task<IActionResult> Update([FromBody] UpdateTaskListGroupDto updateTaskListGroupDto)
         {
             await _taskListGroupService.UpdateAsync(updateTaskListGroupDto);

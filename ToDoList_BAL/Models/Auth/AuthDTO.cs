@@ -2,10 +2,10 @@
 
 namespace ToDoList_BAL.Models.Auth
 {
-    public class AuthDto
+    public class AuthDto : IModelDto<Guid>
     {
         [Required]
-        public Guid UserId { get; set; } = Guid.Empty;
+        public Guid Id { get; set; } = Guid.Empty;
         [Required]
         public string Token { get; set; } = string.Empty;
         [Required]

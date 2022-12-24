@@ -74,7 +74,7 @@ namespace ToDoList_API.Tests
 
             var authDto = result.Value as AuthDto;
             Assert.NotNull(authDto);
-            Assert.Equal(authDto.UserId, Guid.Parse("c0a80121-7001-4b35-9a0c-05f5ec1b26e2"));
+            Assert.Equal(authDto.Id, Guid.Parse("c0a80121-7001-4b35-9a0c-05f5ec1b26e2"));
         }
 
         [Fact]
@@ -100,7 +100,7 @@ namespace ToDoList_API.Tests
                 LastName = "UpdatedLastName"
             };
 
-            var result = await _accountController.Put(userId, updateUserDto) as NoContentResult;
+            var result = await _accountController.Put(updateUserDto) as NoContentResult;
 
             Assert.NotNull(result);
             Assert.Equal(StatusCodes.Status204NoContent, result.StatusCode);
@@ -117,7 +117,7 @@ namespace ToDoList_API.Tests
                 LastName = "UpdatedLastName"
             };
 
-            await Assert.ThrowsAsync<NotFoundException>(async () => await _accountController.Put(userId, updateUserDto));
+            await Assert.ThrowsAsync<NotFoundException>(async () => await _accountController.Put(updateUserDto));
         }
 
         [Fact]
@@ -131,7 +131,7 @@ namespace ToDoList_API.Tests
                 NewPassword = "NewPassword123"
             };
 
-            var result = await _accountController.UpdatePassword(userId, updatePasswordDto) as NoContentResult;
+            var result = await _accountController.UpdatePassword(updatePasswordDto) as NoContentResult;
 
             Assert.NotNull(result);
             Assert.Equal(StatusCodes.Status204NoContent, result.StatusCode);
@@ -148,7 +148,7 @@ namespace ToDoList_API.Tests
                 NewPassword = "NewPassword123"
             };
 
-            await Assert.ThrowsAsync<NotFoundException>(async () => await _accountController.UpdatePassword(userId, updatePasswordDto));
+            await Assert.ThrowsAsync<NotFoundException>(async () => await _accountController.UpdatePassword(updatePasswordDto));
         }
 
         [Fact]
@@ -161,7 +161,7 @@ namespace ToDoList_API.Tests
                 Password = "CorrectPassword"
             };
 
-            var result = await _accountController.Delete(userId, deleteUserDto) as NoContentResult;
+            var result = await _accountController.Delete(deleteUserDto) as NoContentResult;
 
             Assert.NotNull(result);
             Assert.Equal(StatusCodes.Status204NoContent, result.StatusCode);
@@ -177,7 +177,7 @@ namespace ToDoList_API.Tests
                 Password = "Password"
             };
 
-            await Assert.ThrowsAsync<NotFoundException>(async () => await _accountController.Delete(userId, deleteUserDto));
+            await Assert.ThrowsAsync<NotFoundException>(async () => await _accountController.Delete(deleteUserDto));
         }
 
         private static IMapper GetMapper()

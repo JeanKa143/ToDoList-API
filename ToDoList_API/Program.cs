@@ -17,8 +17,10 @@ builder.Services.ConfigureSwaggerGen();
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
 builder.Services.AddScoped<IUserRepository, UserRepository>();
+builder.Services.AddScoped<ITaskListGroupRepository, TaskListGroupRepository>();
 
 builder.Services.AddScoped<UserService>();
+builder.Services.AddScoped<TaskListGroupService>();
 
 builder.Services.AddScoped<ValidateUserIdAttribute>();
 

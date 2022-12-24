@@ -12,7 +12,7 @@ namespace ToDoList_API.Controllers
     [ApiController]
     [Authorize]
     [ApiConventionType(typeof(AppConventions))]
-    [Route("api/account")]
+    [Route("api/user")]
     public class AccountController : ControllerBase
     {
         private readonly UserService _userService;
@@ -22,10 +22,10 @@ namespace ToDoList_API.Controllers
             _userService = userService;
         }
 
-        [HttpGet("{userId}")]
-        public async Task<ActionResult<UserDto>> Get([FromRoute] Guid userId)
+        [HttpGet("{id}")]
+        public async Task<ActionResult<UserDto>> Get([FromRoute] Guid id)
         {
-            UserDto userData = await _userService.GetByIdAsync(userId);
+            UserDto userData = await _userService.GetByIdAsync(id);
             return Ok(userData);
         }
 
@@ -59,10 +59,10 @@ namespace ToDoList_API.Controllers
         [ProducesResponseType(typeof(BadRequestError), StatusCodes.Status400BadRequest)]
         [ProducesDefaultResponseType(typeof(InternalServerError))]
         [AllowAnonymous]
-        [HttpPost("{userId}/refresh-token")]
-        public async Task<ActionResult<AuthDto>> RefreshToken([FromRoute] Guid userId, [FromBody] AuthDto authDto)
+        [HttpPost("{id}/refresh-token")]
+        public async Task<ActionResult<AuthDto>> RefreshToken([FromRoute] Guid id, [FromBody] AuthDto authDto)
         {
-            if (userId != authDto.UserId)
+            if (id != authDto.UserId)
             {
                 return BadRequest(new BadRequestError("Invalid user id"));
             }
@@ -71,9 +71,9 @@ namespace ToDoList_API.Controllers
             return Ok(newAuthDto);
         }
 
-        [HttpPut("{userId}")]
+        [HttpPut("{id}")]
         [ServiceFilter(typeof(ValidateUserIdAttribute))]
-        public async Task<IActionResult> Put([FromRoute] Guid userId, [FromBody] UpdateUserDto updateUserDto)
+        public async Task<IActionResult> Put([FromRoute] Guid id, [FromBody] UpdateUserDto updateUserDto)
         {
             IEnumerable<IdentityError> errors = await _userService.UpdateAsync(updateUserDto);
             return errors.Any()
@@ -81,9 +81,9 @@ namespace ToDoList_API.Controllers
                 : NoContent();
         }
 
-        [HttpPut("{userId}/update-password")]
+        [HttpPut("{id}/update-password")]
         [ServiceFilter(typeof(ValidateUserIdAttribute))]
-        public async Task<IActionResult> UpdatePassword([FromRoute] Guid userId, [FromBody] UpdateUserPasswordDto updatePasswordDto)
+        public async Task<IActionResult> UpdatePassword([FromRoute] Guid id, [FromBody] UpdateUserPasswordDto updatePasswordDto)
         {
             IEnumerable<IdentityError> errors = await _userService.UpdatePasswordAsync(updatePasswordDto);
             return errors.Any()
@@ -91,9 +91,9 @@ namespace ToDoList_API.Controllers
                 : NoContent();
         }
 
-        [HttpDelete("{userId}")]
+        [HttpDelete("{id}")]
         [ServiceFilter(typeof(ValidateUserIdAttribute))]
-        public async Task<IActionResult> Delete([FromRoute] Guid userId, [FromBody] DeleteUserDto deleteUserDto)
+        public async Task<IActionResult> Delete([FromRoute] Guid id, [FromBody] DeleteUserDto deleteUserDto)
         {
             IEnumerable<IdentityError> errors = await _userService.DeleteAsync(deleteUserDto);
             return errors.Any()

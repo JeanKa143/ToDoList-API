@@ -17,28 +17,22 @@ namespace ToDoList_BAL.Services
             _mapper = mapper;
         }
 
-        public async Task<TaskListGroupDto> GetByIdAsync(int taskListGroupId, Guid ownerId)
+        public async Task<TaskListGroupDto> GetByIdAndOwnerIdAsync(int id, Guid ownerId)
         {
-            TaskListGroup? entity = await _taskListGroupRepository.GetByIdAsync(taskListGroupId);
+            TaskListGroup? entity = await _taskListGroupRepository.GetByIdAndOwnerIdAsync(id, ownerId);
 
             if (entity is null)
-                throw new NotFoundException(nameof(TaskListGroup), taskListGroupId);
-
-            if (!entity.OwnerId.Equals(ownerId.ToString()))
-                throw new ForbiddenException(nameof(TaskListGroup), taskListGroupId);
+                throw new NotFoundException(nameof(TaskListGroup), id);
 
             return _mapper.Map<TaskListGroupDto>(entity);
         }
 
-        public async Task<DetailedTaskListGroupDto> GetWithDetailsAsync(int taskListGroupId, Guid ownerId)
+        public async Task<DetailedTaskListGroupDto> GetWithDetailsByIdAndOwnerIdAsync(int id, Guid ownerId)
         {
-            TaskListGroup? entity = await _taskListGroupRepository.GetWithDetailsAsync(taskListGroupId);
+            TaskListGroup? entity = await _taskListGroupRepository.GetWithDetailsByIdAndOwnerIdAsync(id, ownerId);
 
             if (entity is null)
-                throw new NotFoundException(nameof(TaskListGroup), taskListGroupId);
-
-            if (!entity.OwnerId.Equals(ownerId.ToString()))
-                throw new ForbiddenException(nameof(TaskListGroup), taskListGroupId);
+                throw new NotFoundException(nameof(TaskListGroup), id);
 
             return _mapper.Map<DetailedTaskListGroupDto>(entity);
         }
@@ -64,13 +58,10 @@ namespace ToDoList_BAL.Services
 
         public async Task UpdateAsync(UpdateTaskListGroupDto updateTaskListGroupDto)
         {
-            TaskListGroup? entity = await _taskListGroupRepository.GetByIdAsync(updateTaskListGroupDto.Id);
+            TaskListGroup? entity = await _taskListGroupRepository.GetByIdAndOwnerIdAsync(updateTaskListGroupDto.Id, updateTaskListGroupDto.OwnerId);
 
             if (entity is null)
                 throw new NotFoundException(nameof(TaskListGroup), updateTaskListGroupDto.Id);
-
-            if (!entity.OwnerId.Equals(updateTaskListGroupDto.OwnerId.ToString()))
-                throw new ForbiddenException(nameof(TaskListGroup), updateTaskListGroupDto.Id);
 
             if (entity.IsDefault)
                 throw new BadRequestException("Cannot update default task list group");
@@ -79,15 +70,12 @@ namespace ToDoList_BAL.Services
             await _taskListGroupRepository.UpdateAsync(entity);
         }
 
-        public async Task DeleteAsync(int taskListGroupId, Guid ownerId)
+        public async Task DeleteAsync(int id, Guid ownerId)
         {
-            TaskListGroup? entity = await _taskListGroupRepository.GetByIdAsync(taskListGroupId);
+            TaskListGroup? entity = await _taskListGroupRepository.GetByIdAndOwnerIdAsync(id, ownerId);
 
             if (entity is null)
-                throw new NotFoundException(nameof(TaskListGroup), taskListGroupId);
-
-            if (!entity.OwnerId.Equals(ownerId.ToString()))
-                throw new ForbiddenException(nameof(TaskListGroup), taskListGroupId);
+                throw new NotFoundException(nameof(TaskListGroup), id);
 
             if (entity.IsDefault)
                 throw new BadRequestException("Cannot delete default task list group");

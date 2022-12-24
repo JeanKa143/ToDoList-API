@@ -39,15 +39,15 @@ namespace ToDoLIst_DAL.Repositories
                 .ToListAsync();
         }
 
-        public async Task<TaskListGroup?> GetByIdAsync(int taskListGroupId)
+        public async Task<TaskListGroup?> GetByIdAndOwnerIdAsync(int id, Guid ownerId)
         {
-            return await FindByCondition(t => t.Id.Equals(taskListGroupId))
+            return await FindByCondition(t => t.Id.Equals(id) && t.OwnerId.Equals(ownerId.ToString()))
                 .FirstOrDefaultAsync();
         }
 
-        public async Task<TaskListGroup?> GetWithDetailsAsync(int taskListGroupId)
+        public async Task<TaskListGroup?> GetWithDetailsByIdAndOwnerIdAsync(int id, Guid ownerId)
         {
-            return await FindByCondition(t => t.Id.Equals(taskListGroupId))
+            return await FindByCondition(t => t.Id.Equals(id) && t.OwnerId.Equals(ownerId.ToString()))
                 .Include(t => t.TaskLists)
                 .AsNoTracking()
                 .FirstOrDefaultAsync();

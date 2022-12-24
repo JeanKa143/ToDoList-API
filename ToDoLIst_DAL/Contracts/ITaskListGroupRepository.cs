@@ -4,8 +4,8 @@ namespace ToDoLIst_DAL.Contracts
 {
     public interface ITaskListGroupRepository : IRepository<TaskListGroup>
     {
-        public Task<TaskListGroup?> GetByIdAsync(int taskListGroupId);
-        public Task<TaskListGroup?> GetWithDetailsAsync(int taskListGroupId);
+        public Task<TaskListGroup?> GetByIdAndOwnerIdAsync(int id, Guid ownerId);
+        public Task<TaskListGroup?> GetWithDetailsByIdAndOwnerIdAsync(int id, Guid ownerId);
         public Task<IEnumerable<TaskListGroup>> GetAllByOwnerIdAsync(Guid ownerId);
         public Task<IEnumerable<TaskListGroup>> GetAllWithDetailsByOwnerIdAsync(Guid ownerId);
         public Task CreateAsync(TaskListGroup taskListGroup);

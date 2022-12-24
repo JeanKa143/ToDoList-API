@@ -20,7 +20,6 @@ namespace ToDoList_BAL.Configurations
             CreateMap<TaskListGroup, DetailedTaskListGroupDto>();
             CreateMap<CreateTaskListGroupDto, TaskListGroup>();
             CreateMap<UpdateTaskListGroupDto, TaskListGroup>();
-            CreateMap<DeleteTaskListGroupDto, TaskListGroup>();
 
 
             CreateMap<TaskList, TaskListDto>();

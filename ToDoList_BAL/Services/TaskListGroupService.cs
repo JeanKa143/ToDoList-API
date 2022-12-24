@@ -79,15 +79,15 @@ namespace ToDoList_BAL.Services
             await _taskListGroupRepository.UpdateAsync(entity);
         }
 
-        public async Task DeleteAsync(DeleteTaskListGroupDto deleteTaskListGroupDto)
+        public async Task DeleteAsync(int taskListGroupId, Guid ownerId)
         {
-            TaskListGroup? entity = await _taskListGroupRepository.GetByIdAsync(deleteTaskListGroupDto.Id);
+            TaskListGroup? entity = await _taskListGroupRepository.GetByIdAsync(taskListGroupId);
 
             if (entity is null)
-                throw new NotFoundException(nameof(TaskListGroup), deleteTaskListGroupDto.Id);
+                throw new NotFoundException(nameof(TaskListGroup), taskListGroupId);
 
-            if (!entity.OwnerId.Equals(deleteTaskListGroupDto.OwnerId.ToString()))
-                throw new ForbiddenException(nameof(TaskListGroup), deleteTaskListGroupDto.Id);
+            if (!entity.OwnerId.Equals(ownerId.ToString()))
+                throw new ForbiddenException(nameof(TaskListGroup), taskListGroupId);
 
             if (entity.IsDefault)
                 throw new BadRequestException("Cannot delete default task list group");

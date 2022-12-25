@@ -30,9 +30,6 @@ namespace ToDoList_API.Controllers
             return Ok(userData);
         }
 
-        [ProducesResponseType(StatusCodes.Status204NoContent)]
-        [ProducesResponseType(typeof(BadRequestError), StatusCodes.Status400BadRequest)]
-        [ProducesDefaultResponseType(typeof(InternalServerError))]
         [AllowAnonymous]
         [HttpPost]
         public async Task<IActionResult> Register([FromBody] CreateUserDto createUserDto)
@@ -44,10 +41,6 @@ namespace ToDoList_API.Controllers
                 : NoContent();
         }
 
-        [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(typeof(BadRequestError), StatusCodes.Status400BadRequest)]
-        [ProducesResponseType(typeof(UnauthorizedError), StatusCodes.Status401Unauthorized)]
-        [ProducesDefaultResponseType(typeof(InternalServerError))]
         [AllowAnonymous]
         [HttpPost("login")]
         public async Task<ActionResult<AuthDto>> Login([FromBody] LoginDto loginDto)
@@ -56,9 +49,6 @@ namespace ToDoList_API.Controllers
             return Ok(authData);
         }
 
-        [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(typeof(BadRequestError), StatusCodes.Status400BadRequest)]
-        [ProducesDefaultResponseType(typeof(InternalServerError))]
         [AllowAnonymous]
         [HttpPost("{id}/refresh-token")]
         [ServiceFilter(typeof(ValidateDtoIdFilter<Guid>))]

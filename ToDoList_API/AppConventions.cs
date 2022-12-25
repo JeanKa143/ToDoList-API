@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc.ApiExplorer;
 using ToDoList_API.Errors;
 
 #nullable disable
+#pragma warning disable IDE0060 // Remove unused parameter
 
 namespace ToDoList_API
 {
@@ -12,10 +13,36 @@ namespace ToDoList_API
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(BadRequestError), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(UnauthorizedError), StatusCodes.Status401Unauthorized)]
+        [ProducesDefaultResponseType(typeof(InternalServerError))]
+        [ApiConventionNameMatch(ApiConventionNameMatchBehavior.Prefix)]
+        public static void GetAll(
+            [ApiConventionNameMatch(ApiConventionNameMatchBehavior.Suffix)]
+            [ApiConventionTypeMatch(ApiConventionTypeMatchBehavior.Any)]
+            object id)
+        { }
+
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(BadRequestError), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(UnauthorizedError), StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(typeof(NotFoundError), StatusCodes.Status404NotFound)]
         [ProducesDefaultResponseType(typeof(InternalServerError))]
         [ApiConventionNameMatch(ApiConventionNameMatchBehavior.Prefix)]
         public static void Get(
+            [ApiConventionNameMatch(ApiConventionNameMatchBehavior.Suffix)]
+            [ApiConventionTypeMatch(ApiConventionTypeMatchBehavior.Any)]
+            object id)
+        { }
+
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(BadRequestError), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(UnauthorizedError), StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(typeof(NotFoundError), StatusCodes.Status404NotFound)]
+        [ProducesDefaultResponseType(typeof(InternalServerError))]
+        [ApiConventionNameMatch(ApiConventionNameMatchBehavior.Prefix)]
+        public static void Get(
+            [ApiConventionNameMatch(ApiConventionNameMatchBehavior.Suffix)]
+            Guid Id,
+
             [ApiConventionNameMatch(ApiConventionNameMatchBehavior.Suffix)]
             [ApiConventionTypeMatch(ApiConventionTypeMatchBehavior.Any)]
             object id)
@@ -28,7 +55,42 @@ namespace ToDoList_API
         [ProducesResponseType(typeof(UnauthorizedError), StatusCodes.Status401Unauthorized)]
         [ProducesDefaultResponseType(typeof(InternalServerError))]
         [ApiConventionNameMatch(ApiConventionNameMatchBehavior.Prefix)]
-        public static void Post(
+        public static void Create(
+            [ApiConventionNameMatch(ApiConventionNameMatchBehavior.Suffix)]
+            [ApiConventionTypeMatch(ApiConventionTypeMatchBehavior.Any)]
+            object id,
+
+            [ApiConventionNameMatch(ApiConventionNameMatchBehavior.Suffix)]
+            [ApiConventionTypeMatch(ApiConventionTypeMatchBehavior.Any)]
+            object dto)
+        { }
+
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(typeof(BadRequestError), StatusCodes.Status400BadRequest)]
+        [ProducesDefaultResponseType(typeof(InternalServerError))]
+        [ApiConventionNameMatch(ApiConventionNameMatchBehavior.Exact)]
+        public static void Register(
+            [ApiConventionNameMatch(ApiConventionNameMatchBehavior.Suffix)]
+            [ApiConventionTypeMatch(ApiConventionTypeMatchBehavior.Any)]
+            object dto)
+        { }
+
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(BadRequestError), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(UnauthorizedError), StatusCodes.Status401Unauthorized)]
+        [ProducesDefaultResponseType(typeof(InternalServerError))]
+        [ApiConventionNameMatch(ApiConventionNameMatchBehavior.Exact)]
+        public static void Login(
+            [ApiConventionNameMatch(ApiConventionNameMatchBehavior.Suffix)]
+            [ApiConventionTypeMatch(ApiConventionTypeMatchBehavior.Any)]
+            object dto)
+        { }
+
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(BadRequestError), StatusCodes.Status400BadRequest)]
+        [ProducesDefaultResponseType(typeof(InternalServerError))]
+        [ApiConventionNameMatch(ApiConventionNameMatchBehavior.Exact)]
+        public static void RefreshToken(
             [ApiConventionNameMatch(ApiConventionNameMatchBehavior.Suffix)]
             [ApiConventionTypeMatch(ApiConventionTypeMatchBehavior.Any)]
             object dto)
@@ -45,8 +107,16 @@ namespace ToDoList_API
         public static void Put(
             [ApiConventionNameMatch(ApiConventionNameMatchBehavior.Suffix)]
             [ApiConventionTypeMatch(ApiConventionTypeMatchBehavior.Any)]
-            object id,
+            object dto)
+        { }
 
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(typeof(BadRequestError), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(UnauthorizedError), StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(typeof(NotFoundError), StatusCodes.Status404NotFound)]
+        [ProducesDefaultResponseType(typeof(InternalServerError))]
+        [ApiConventionNameMatch(ApiConventionNameMatchBehavior.Prefix)]
+        public static void Update(
             [ApiConventionNameMatch(ApiConventionNameMatchBehavior.Suffix)]
             [ApiConventionTypeMatch(ApiConventionTypeMatchBehavior.Any)]
             object dto)
@@ -70,33 +140,35 @@ namespace ToDoList_API
         #endregion
 
         #region DELETE
-        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(typeof(BadRequestError), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(UnauthorizedError), StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(typeof(NotFoundError), StatusCodes.Status404NotFound)]
         [ProducesDefaultResponseType(typeof(InternalServerError))]
         [ApiConventionNameMatch(ApiConventionNameMatchBehavior.Prefix)]
         public static void Delete(
-            [ApiConventionNameMatch(ApiConventionNameMatchBehavior.Suffix)]
-            [ApiConventionTypeMatch(ApiConventionTypeMatchBehavior.Any)]
-            object id)
-        { }
-
-        [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(typeof(BadRequestError), StatusCodes.Status400BadRequest)]
-        [ProducesResponseType(typeof(UnauthorizedError), StatusCodes.Status401Unauthorized)]
-        [ProducesResponseType(typeof(NotFoundError), StatusCodes.Status404NotFound)]
-        [ProducesDefaultResponseType(typeof(InternalServerError))]
-        [ApiConventionNameMatch(ApiConventionNameMatchBehavior.Prefix)]
-        public static void Delete(
-            [ApiConventionNameMatch(ApiConventionNameMatchBehavior.Suffix)]
-            [ApiConventionTypeMatch(ApiConventionTypeMatchBehavior.Any)]
-            object id,
-
             [ApiConventionNameMatch(ApiConventionNameMatchBehavior.Suffix)]
             [ApiConventionTypeMatch(ApiConventionTypeMatchBehavior.Any)]
             object dto)
         { }
+
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(typeof(BadRequestError), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(UnauthorizedError), StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(typeof(NotFoundError), StatusCodes.Status404NotFound)]
+        [ProducesDefaultResponseType(typeof(InternalServerError))]
+        [ApiConventionNameMatch(ApiConventionNameMatchBehavior.Prefix)]
+        public static void Delete(
+            [ApiConventionNameMatch(ApiConventionNameMatchBehavior.Suffix)]
+            [ApiConventionTypeMatch(ApiConventionTypeMatchBehavior.Any)]
+            object Id,
+
+            [ApiConventionNameMatch(ApiConventionNameMatchBehavior.Suffix)]
+            [ApiConventionTypeMatch(ApiConventionTypeMatchBehavior.Any)]
+            object id)
+        { }
         #endregion
     }
 }
+
+#pragma warning restore IDE0060 // Remove unused parameter

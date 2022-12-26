@@ -1,5 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
-using ToDoList_BAL.Models.AppUser;
+﻿using ToDoList_BAL.Models.AppUser;
 
 namespace ToDoList_API.Tests
 {
@@ -108,12 +107,6 @@ namespace ToDoList_API.Tests
                 new object[] { Guid.NewGuid(), "oldPassword", "newPassword", "newPassword", true }
             };
 
-        private static bool ValidateModel(object model)
-        {
-            var validationResults = new List<ValidationResult>();
-            var ctx = new ValidationContext(model, null, null);
-
-            return Validator.TryValidateObject(model, ctx, validationResults, true);
-        }
+        private static bool ValidateModel(object model) => Utils.ValidateModel(model);
     }
 }

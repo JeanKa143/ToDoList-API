@@ -7,7 +7,7 @@ using ToDoList_BAL.Models.AppUser;
 using ToDoList_BAL.Models.Auth;
 using ToDoList_BAL.Services;
 
-namespace ToDoList_API.Tests
+namespace ToDoList_API.Tests.ControllerTests
 {
     public class AccountControllerTest
     {

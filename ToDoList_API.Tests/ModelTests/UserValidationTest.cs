@@ -1,6 +1,6 @@
 ﻿using ToDoList_BAL.Models.AppUser;
 
-namespace ToDoList_API.Tests
+namespace ToDoList_API.Tests.ModelTests
 {
     public class UserValidationTest
     {

@@ -5,11 +5,11 @@ VisualStudioVersion = 17.2.32630.192
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ToDoList_BAL", "ToDoList_BAL\ToDoList_BAL.csproj", "{3B3DB522-4F33-426A-B1C6-22C1AF980DB8}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ToDoLIst_DAL", "ToDoLIst_DAL\ToDoLIst_DAL.csproj", "{E06F758F-0ABD-4CB7-94DD-063968DAA45A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ToDoList_DAL", "ToDoList_DAL\ToDoList_DAL.csproj", "{E06F758F-0ABD-4CB7-94DD-063968DAA45A}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ToDoList_API", "ToDoList_API\ToDoList_API.csproj", "{3353F0A2-D958-4C38-99ED-35448D5AB700}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ToDoList_API.Tests", "ToDoList_API.Tests\ToDoList_API.Tests.csproj", "{0C862597-CEC0-4DC0-9E87-3CAF546D7BA0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ToDoList_API.Tests", "ToDoList_API.Tests\ToDoList_API.Tests.csproj", "{0C862597-CEC0-4DC0-9E87-3CAF546D7BA0}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

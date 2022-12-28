@@ -6,6 +6,7 @@ namespace ToDoList_API.Tests.ModelTests
     {
         [Theory]
         [InlineData(null, "00000000-0000-0000-0000-000000000000", false)]
+        [InlineData("TestNameTestNameTestNameTestNameTestNameTestNameTestNameTestNameTestNameTestNameTestNameTestNameTestNameTestNameTestNameTestNameTestNameTestNameTestNameTestNameTestNameTestNameTestNameTestNameTestNameTestName", "00000000-0000-0000-0000-000000000000", false)]
         [InlineData("TestName", "00000000-0000-0000-0000-000000000000", true)]
         public void TestCreateTaskListGroupModelValidation(string name, Guid ownerId, bool isValid)
         {
@@ -20,7 +21,8 @@ namespace ToDoList_API.Tests.ModelTests
 
         [Theory]
         [InlineData(0, "00000000-0000-0000-0000-000000000000", null, false)]
-        [InlineData(0, "00000000-0000-0000-0000-000000000000", "Test Name", true)]
+        [InlineData(0, "00000000-0000-0000-0000-000000000000", "TestNameTestNameTestNameTestNameTestNameTestNameTestNameTestNameTestNameTestNameTestNameTestNameTestNameTestNameTestNameTestNameTestNameTestNameTestNameTestNameTestNameTestNameTestNameTestNameTestNameTestName", false)]
+        [InlineData(0, "00000000-0000-0000-0000-000000000000", "TestName", true)]
         public void TestUpdateTaskListGroupModelValidation(int id, Guid ownerId, string name, bool isValid)
         {
             var taskListGroup = new UpdateTaskListGroupDto

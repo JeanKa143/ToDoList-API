@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using ToDoList_BAL.Models.AppUser;
+using ToDoList_BAL.Models.TaskItem;
 using ToDoList_BAL.Models.TaskList;
 using ToDoList_BAL.Models.TaskListGroup;
 using ToDoLIst_DAL.Entities;
@@ -23,6 +24,12 @@ namespace ToDoList_BAL.Configurations
 
 
             CreateMap<TaskList, TaskListDto>();
+            CreateMap<TaskList, DetailedTaskListDto>();
+            CreateMap<CreateTaskListDto, TaskList>();
+            CreateMap<UpdateTaskListDto, TaskList>();
+
+
+            CreateMap<TaskItem, TaskItemDto>();
         }
     }
 }

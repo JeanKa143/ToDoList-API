@@ -24,13 +24,13 @@ namespace ToDoList_API.Tests.Mocks
             mock.Setup(m => m.GetAllWithDetailsByOwnerIdAsync(It.IsAny<Guid>()))
                 .ReturnsAsync((Guid ownerId) => data.Where(tlg => tlg.OwnerId == ownerId.ToString()).ToList());
 
-            mock.Setup(m => m.CreateAsync(It.IsAny<TaskListGroup>()))
+            mock.Setup(m => m.Create(It.IsAny<TaskListGroup>()))
                 .Callback(() => { return; });
 
-            mock.Setup(m => m.UpdateAsync(It.IsAny<TaskListGroup>()))
+            mock.Setup(m => m.Update(It.IsAny<TaskListGroup>()))
                 .Callback(() => { return; });
 
-            mock.Setup(m => m.DeleteAsync(It.IsAny<TaskListGroup>()))
+            mock.Setup(m => m.Delete(It.IsAny<TaskListGroup>()))
                 .Callback(() => { return; });
 
             return mock;

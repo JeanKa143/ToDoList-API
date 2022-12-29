@@ -356,9 +356,9 @@ namespace ToDoList_API.Tests.ControllerTests
 
         private static TaskListGroupService GetTaskListGroupService()
         {
-            var mockITaskListRepository = MockITaskListGroupRepository.GetMock();
+            var mockIUnitOfWork = MockIUnitOfWork.GetMock();
             var mockIUserRepository = MockIUserRepository.GetMock();
-            return new TaskListGroupService(mockITaskListRepository.Object, mockIUserRepository.Object, Utils.GetMapper());
+            return new TaskListGroupService(mockIUnitOfWork.Object, mockIUserRepository.Object, Utils.GetMapper());
         }
     }
 }

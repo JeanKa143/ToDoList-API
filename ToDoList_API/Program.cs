@@ -2,6 +2,8 @@ using ToDoList_API.Extensions;
 using ToDoList_API.Filters;
 using ToDoList_API.Middlewares;
 using ToDoList_BAL.Services;
+using ToDoList_DAL.Contracts;
+using ToDoList_DAL.Repositories;
 using ToDoLIst_DAL.Contracts;
 using ToDoLIst_DAL.Repositories;
 
@@ -17,8 +19,7 @@ builder.Services.ConfigureSwaggerGen();
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
 builder.Services.AddScoped<IUserRepository, UserRepository>();
-builder.Services.AddScoped<ITaskListGroupRepository, TaskListGroupRepository>();
-builder.Services.AddScoped<ITaskListRepository, TaskListRepository>();
+builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 
 builder.Services.AddScoped<UserService>();
 builder.Services.AddScoped<TaskListGroupService>();

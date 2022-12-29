@@ -12,18 +12,6 @@ namespace ToDoLIst_DAL.Repositories
         {
         }
 
-        public async Task CreateAsync(TaskListGroup taskListGroup)
-        {
-            Create(taskListGroup);
-            await AppDbContext.SaveChangesAsync();
-        }
-
-        public async Task DeleteAsync(TaskListGroup taskListGroup)
-        {
-            Delete(taskListGroup);
-            await AppDbContext.SaveChangesAsync();
-        }
-
         public async Task<IEnumerable<TaskListGroup>> GetAllByOwnerIdAsync(Guid ownerId)
         {
             return await FindByCondition(t => t.OwnerId.Equals(ownerId.ToString()))
@@ -51,12 +39,6 @@ namespace ToDoLIst_DAL.Repositories
                 .Include(t => t.TaskLists)
                 .AsNoTracking()
                 .FirstOrDefaultAsync();
-        }
-
-        public async Task UpdateAsync(TaskListGroup taskListGroup)
-        {
-            Update(taskListGroup);
-            await AppDbContext.SaveChangesAsync();
         }
     }
 }

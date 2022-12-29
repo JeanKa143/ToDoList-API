@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using ToDoList_BAL.Exceptions;
 using ToDoList_BAL.Models.TaskListGroup;
+using ToDoList_DAL.Contracts;
 using ToDoLIst_DAL.Contracts;
 using ToDoLIst_DAL.Entities;
 
@@ -8,20 +9,20 @@ namespace ToDoList_BAL.Services
 {
     public class TaskListGroupService
     {
-        private readonly ITaskListGroupRepository _taskListGroupRepository;
+        private readonly IUnitOfWork _unitOfWork;
         private readonly IUserRepository _userRepository;
         private readonly IMapper _mapper;
 
-        public TaskListGroupService(ITaskListGroupRepository taskListGroupRepository, IUserRepository userRepository, IMapper mapper)
+        public TaskListGroupService(IUnitOfWork unitOfWork, IUserRepository userRepository, IMapper mapper)
         {
-            _taskListGroupRepository = taskListGroupRepository;
+            _unitOfWork = unitOfWork;
             _userRepository = userRepository;
             _mapper = mapper;
         }
 
         public async Task<TaskListGroupDto> GetByIdAndOwnerIdAsync(int id, Guid ownerId)
         {
-            TaskListGroup? entity = await _taskListGroupRepository.GetByIdAndOwnerIdAsync(id, ownerId);
+            TaskListGroup? entity = await _unitOfWork.TaskListGroups.GetByIdAndOwnerIdAsync(id, ownerId);
 
             if (entity is null)
                 throw new NotFoundException(nameof(TaskListGroup), id);
@@ -31,7 +32,7 @@ namespace ToDoList_BAL.Services
 
         public async Task<DetailedTaskListGroupDto> GetWithDetailsByIdAndOwnerIdAsync(int id, Guid ownerId)
         {
-            TaskListGroup? entity = await _taskListGroupRepository.GetWithDetailsByIdAndOwnerIdAsync(id, ownerId);
+            TaskListGroup? entity = await _unitOfWork.TaskListGroups.GetWithDetailsByIdAndOwnerIdAsync(id, ownerId);
 
             if (entity is null)
                 throw new NotFoundException(nameof(TaskListGroup), id);
@@ -43,7 +44,7 @@ namespace ToDoList_BAL.Services
         {
             await CheckIfUserExists(ownerId);
 
-            IEnumerable<TaskListGroup> entities = await _taskListGroupRepository.GetAllByOwnerIdAsync(ownerId);
+            IEnumerable<TaskListGroup> entities = await _unitOfWork.TaskListGroups.GetAllByOwnerIdAsync(ownerId);
             return _mapper.Map<IEnumerable<TaskListGroupDto>>(entities);
         }
 
@@ -51,7 +52,7 @@ namespace ToDoList_BAL.Services
         {
             await CheckIfUserExists(ownerId);
 
-            IEnumerable<TaskListGroup> entities = await _taskListGroupRepository.GetAllWithDetailsByOwnerIdAsync(ownerId);
+            IEnumerable<TaskListGroup> entities = await _unitOfWork.TaskListGroups.GetAllWithDetailsByOwnerIdAsync(ownerId);
             return _mapper.Map<IEnumerable<DetailedTaskListGroupDto>>(entities);
         }
 
@@ -60,13 +61,14 @@ namespace ToDoList_BAL.Services
             await CheckIfUserExists(createTaskListGroupDto.OwnerId);
 
             TaskListGroup entity = _mapper.Map<TaskListGroup>(createTaskListGroupDto);
-            await _taskListGroupRepository.CreateAsync(entity);
+            _unitOfWork.TaskListGroups.Create(entity);
+            await _unitOfWork.SaveAsync();
             return _mapper.Map<TaskListGroupDto>(entity);
         }
 
         public async Task UpdateAsync(UpdateTaskListGroupDto updateTaskListGroupDto)
         {
-            TaskListGroup? entity = await _taskListGroupRepository.GetByIdAndOwnerIdAsync(updateTaskListGroupDto.Id, updateTaskListGroupDto.OwnerId);
+            TaskListGroup? entity = await _unitOfWork.TaskListGroups.GetByIdAndOwnerIdAsync(updateTaskListGroupDto.Id, updateTaskListGroupDto.OwnerId);
 
             if (entity is null)
                 throw new NotFoundException(nameof(TaskListGroup), updateTaskListGroupDto.Id);
@@ -75,12 +77,13 @@ namespace ToDoList_BAL.Services
                 throw new BadRequestException("Cannot update default task list group");
 
             _mapper.Map(updateTaskListGroupDto, entity);
-            await _taskListGroupRepository.UpdateAsync(entity);
+            _unitOfWork.TaskListGroups.Update(entity);
+            await _unitOfWork.SaveAsync();
         }
 
         public async Task DeleteAsync(int id, Guid ownerId)
         {
-            TaskListGroup? entity = await _taskListGroupRepository.GetByIdAndOwnerIdAsync(id, ownerId);
+            TaskListGroup? entity = await _unitOfWork.TaskListGroups.GetByIdAndOwnerIdAsync(id, ownerId);
 
             if (entity is null)
                 throw new NotFoundException(nameof(TaskListGroup), id);
@@ -88,7 +91,8 @@ namespace ToDoList_BAL.Services
             if (entity.IsDefault)
                 throw new BadRequestException("Cannot delete default task list group");
 
-            await _taskListGroupRepository.DeleteAsync(entity);
+            _unitOfWork.TaskListGroups.Delete(entity);
+            await _unitOfWork.SaveAsync();
         }
 
 

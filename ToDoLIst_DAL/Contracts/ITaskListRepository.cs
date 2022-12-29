@@ -7,8 +7,5 @@ namespace ToDoLIst_DAL.Contracts
         public Task<TaskList?> GetByIdAndGroupIdAsync(int id, int groupId);
         public Task<TaskList?> GetWithDetailsByIdAndGroupIdAsync(int id, int groupId);
         public Task<IEnumerable<TaskList>> GetAllByGroupIdAsync(int groupId);
-        public Task CreateAsync(TaskList taskList);
-        public Task UpdateAsync(TaskList taskList);
-        public Task DeleteAsync(TaskList taskList);
     }
 }

@@ -1,4 +1,4 @@
-using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using ToDoList_API.Controllers;
 using ToDoList_API.Errors;
@@ -165,7 +165,7 @@ namespace ToDoList_API.Tests.ControllerTests
         [Fact]
         public async void GivenAValidData_WhenCreating_ThenCreatedAtActionReturns()
         {
-            var ownerId = Guid.Parse("b171ba77-2247-4112-9aeb-fd171a433b23");
+            var ownerId = Guid.Parse("c0a80121-7001-4b35-9a0c-05f5ec1b26e2");
             var createTaskListGroupDto = new CreateTaskListGroupDto
             {
                 Name = "New TaskListGroup",

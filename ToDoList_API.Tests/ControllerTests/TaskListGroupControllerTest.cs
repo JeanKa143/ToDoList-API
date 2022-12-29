@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using ToDoList_API.Controllers;
 using ToDoList_API.Errors;
@@ -349,8 +349,9 @@ namespace ToDoList_API.Tests.ControllerTests
 
         private static TaskListGroupService GetTaskListGroupService()
         {
-            var mock = MockITaskListGroupRepository.GetMock();
-            return new TaskListGroupService(mock.Object, Utils.GetMapper());
+            var mockITaskListRepository = MockITaskListGroupRepository.GetMock();
+            var mockIUserRepository = MockIUserRepository.GetMock();
+            return new TaskListGroupService(mockITaskListRepository.Object, mockIUserRepository.Object, Utils.GetMapper());
         }
     }
 }

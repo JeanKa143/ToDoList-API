@@ -9,11 +9,13 @@ namespace ToDoList_BAL.Services
     public class TaskListGroupService
     {
         private readonly ITaskListGroupRepository _taskListGroupRepository;
+        private readonly IUserRepository _userRepository;
         private readonly IMapper _mapper;
 
-        public TaskListGroupService(ITaskListGroupRepository taskListGroupRepository, IMapper mapper)
+        public TaskListGroupService(ITaskListGroupRepository taskListGroupRepository, IUserRepository userRepository, IMapper mapper)
         {
             _taskListGroupRepository = taskListGroupRepository;
+            _userRepository = userRepository;
             _mapper = mapper;
         }
 
@@ -51,6 +53,11 @@ namespace ToDoList_BAL.Services
 
         public async Task<TaskListGroupDto> CreateAsync(CreateTaskListGroupDto createTaskListGroupDto)
         {
+            var user = await _userRepository.GetByIdAsync(createTaskListGroupDto.OwnerId.ToString());
+
+            if (user is null) //Todo: Test condition
+                throw new NotFoundException("User", createTaskListGroupDto.OwnerId);
+
             TaskListGroup entity = _mapper.Map<TaskListGroup>(createTaskListGroupDto);
             await _taskListGroupRepository.CreateAsync(entity);
             return _mapper.Map<TaskListGroupDto>(entity);

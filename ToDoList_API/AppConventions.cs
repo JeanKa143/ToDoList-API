@@ -53,6 +53,7 @@ namespace ToDoList_API
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(typeof(BadRequestError), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(UnauthorizedError), StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(typeof(NotFoundError), StatusCodes.Status404NotFound)]
         [ProducesDefaultResponseType(typeof(InternalServerError))]
         [ApiConventionNameMatch(ApiConventionNameMatchBehavior.Prefix)]
         public static void Create(

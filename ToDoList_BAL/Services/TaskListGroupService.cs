@@ -41,22 +41,23 @@ namespace ToDoList_BAL.Services
 
         public async Task<IEnumerable<TaskListGroupDto>> GetAllByOwnerIdAsync(Guid ownerId)
         {
+            await CheckIfUserExists(ownerId); //Todo: Test condition
+
             IEnumerable<TaskListGroup> entities = await _taskListGroupRepository.GetAllByOwnerIdAsync(ownerId);
             return _mapper.Map<IEnumerable<TaskListGroupDto>>(entities);
         }
 
         public async Task<IEnumerable<DetailedTaskListGroupDto>> GetAllWithDetailsByOwnerIdAsync(Guid ownerId)
         {
+            await CheckIfUserExists(ownerId); //Todo: Test condition
+
             IEnumerable<TaskListGroup> entities = await _taskListGroupRepository.GetAllWithDetailsByOwnerIdAsync(ownerId);
             return _mapper.Map<IEnumerable<DetailedTaskListGroupDto>>(entities);
         }
 
         public async Task<TaskListGroupDto> CreateAsync(CreateTaskListGroupDto createTaskListGroupDto)
         {
-            var user = await _userRepository.GetByIdAsync(createTaskListGroupDto.OwnerId.ToString());
-
-            if (user is null) //Todo: Test condition
-                throw new NotFoundException("User", createTaskListGroupDto.OwnerId);
+            await CheckIfUserExists(createTaskListGroupDto.OwnerId); //Todo: Test condition
 
             TaskListGroup entity = _mapper.Map<TaskListGroup>(createTaskListGroupDto);
             await _taskListGroupRepository.CreateAsync(entity);
@@ -88,6 +89,15 @@ namespace ToDoList_BAL.Services
                 throw new BadRequestException("Cannot delete default task list group");
 
             await _taskListGroupRepository.DeleteAsync(entity);
+        }
+
+
+        private async Task CheckIfUserExists(Guid userId)
+        {
+            var user = await _userRepository.GetByIdAsync(userId.ToString());
+
+            if (user is null)
+                throw new NotFoundException("User", userId);
         }
     }
 }

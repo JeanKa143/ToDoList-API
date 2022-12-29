@@ -6,6 +6,8 @@ namespace ToDoList_BAL.Models.TaskList
     {
         [Required]
         public int Id { get; set; }
+        [Required]
+        public int GroupId { get; set; }
         [Required, StringLength(200)]
         public string Name { get; set; } = string.Empty;
     }

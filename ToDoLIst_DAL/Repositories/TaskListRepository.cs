@@ -24,22 +24,22 @@ namespace ToDoLIst_DAL.Repositories
             await AppDbContext.SaveChangesAsync();
         }
 
-        public async Task<IEnumerable<TaskList>> GetAllByOwnerIdAndGroupIdAsync(Guid ownerId, int groupId)
+        public async Task<IEnumerable<TaskList>> GetAllByGroupIdAsync(int groupId)
         {
-            return await FindByCondition(t => t.GroupId.Equals(groupId) && t.Group!.OwnerId.Equals(ownerId.ToString()))
+            return await FindByCondition(t => t.GroupId.Equals(groupId))
                 .AsNoTracking()
                 .ToListAsync();
         }
 
-        public async Task<TaskList?> GetByIdAndOwnerIdAsync(int id, Guid ownerId)
+        public async Task<TaskList?> GetByIdAndGroupIdAsync(int id, int groupId)
         {
-            return await FindByCondition(t => t.Group!.OwnerId.Equals(ownerId.ToString()))
+            return await FindByCondition(t => t.Id.Equals(id) && t.GroupId.Equals(groupId))
                 .FirstOrDefaultAsync();
         }
 
-        public async Task<TaskList?> GetWithDetailsByIdAndOwnerIdAsync(int id, Guid ownerId)
+        public async Task<TaskList?> GetWithDetailsByIdAndGroupIdAsync(int id, int groupId)
         {
-            return await FindByCondition(t => t.Group!.OwnerId.Equals(ownerId.ToString()))
+            return await FindByCondition(t => t.Id.Equals(id) && t.GroupId.Equals(groupId))
                 .Include(t => t.TaskItems)
                 .AsNoTracking()
                 .FirstOrDefaultAsync();

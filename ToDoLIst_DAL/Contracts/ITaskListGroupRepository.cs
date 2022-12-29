@@ -8,5 +8,7 @@ namespace ToDoLIst_DAL.Contracts
         public Task<TaskListGroup?> GetWithDetailsByIdAndOwnerIdAsync(int id, Guid ownerId);
         public Task<IEnumerable<TaskListGroup>> GetAllByOwnerIdAsync(Guid ownerId);
         public Task<IEnumerable<TaskListGroup>> GetAllWithDetailsByOwnerIdAsync(Guid ownerId);
+
+        public Task<bool> IsAnyWithOwnerIdAndGroupIdAsync(Guid ownerId, int groupId);
     }
 }

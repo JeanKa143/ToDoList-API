@@ -32,5 +32,11 @@ namespace ToDoLIst_DAL.Repositories
                 .AsNoTracking()
                 .FirstOrDefaultAsync();
         }
+
+        public async Task<bool> IsAnyWithGroupIdAndListId(int groupId, int listId)
+        {
+            return await FindByCondition(t => t.GroupId.Equals(groupId) && t.Id.Equals(listId))
+                .AnyAsync();
+        }
     }
 }

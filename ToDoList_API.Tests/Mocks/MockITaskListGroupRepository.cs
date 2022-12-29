@@ -24,6 +24,9 @@ namespace ToDoList_API.Tests.Mocks
             mock.Setup(m => m.GetAllWithDetailsByOwnerIdAsync(It.IsAny<Guid>()))
                 .ReturnsAsync((Guid ownerId) => data.Where(tlg => tlg.OwnerId == ownerId.ToString()).ToList());
 
+            mock.Setup(m => m.IsAnyWithOwnerIdAndGroupIdAsync(It.IsAny<Guid>(), It.IsAny<int>()))
+                .ReturnsAsync((Guid ownerId, int groupId) => data.Any(tlg => tlg.Id == groupId && tlg.OwnerId == ownerId.ToString()));
+
             mock.Setup(m => m.Create(It.IsAny<TaskListGroup>()))
                 .Callback(() => { return; });
 

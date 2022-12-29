@@ -95,9 +95,7 @@ namespace ToDoList_BAL.Services
 
         private async Task CheckIfGroupWithOwnerExistsAsync(Guid ownerId, int groupId)
         {
-            bool isOwnerOfGroup = await _unitOfWork.TaskListGroups.GetByIdAndOwnerIdAsync(groupId, ownerId) is not null;
-
-            if (!isOwnerOfGroup)
+            if (!await _unitOfWork.TaskListGroups.IsAnyWithOwnerIdAndGroupIdAsync(ownerId, groupId))
                 throw new NotFoundException(nameof(TaskListGroup), groupId);
         }
     }

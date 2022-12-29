@@ -13,12 +13,13 @@ namespace ToDoList_API
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(BadRequestError), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(UnauthorizedError), StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(typeof(NotFoundError), StatusCodes.Status404NotFound)]
         [ProducesDefaultResponseType(typeof(InternalServerError))]
         [ApiConventionNameMatch(ApiConventionNameMatchBehavior.Prefix)]
         public static void GetAll(
             [ApiConventionNameMatch(ApiConventionNameMatchBehavior.Suffix)]
             [ApiConventionTypeMatch(ApiConventionTypeMatchBehavior.Any)]
-            object id)
+            params object[] id)
         { }
 
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -30,22 +31,7 @@ namespace ToDoList_API
         public static void Get(
             [ApiConventionNameMatch(ApiConventionNameMatchBehavior.Suffix)]
             [ApiConventionTypeMatch(ApiConventionTypeMatchBehavior.Any)]
-            object id)
-        { }
-
-        [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(typeof(BadRequestError), StatusCodes.Status400BadRequest)]
-        [ProducesResponseType(typeof(UnauthorizedError), StatusCodes.Status401Unauthorized)]
-        [ProducesResponseType(typeof(NotFoundError), StatusCodes.Status404NotFound)]
-        [ProducesDefaultResponseType(typeof(InternalServerError))]
-        [ApiConventionNameMatch(ApiConventionNameMatchBehavior.Prefix)]
-        public static void Get(
-            [ApiConventionNameMatch(ApiConventionNameMatchBehavior.Suffix)]
-            Guid Id,
-
-            [ApiConventionNameMatch(ApiConventionNameMatchBehavior.Suffix)]
-            [ApiConventionTypeMatch(ApiConventionTypeMatchBehavior.Any)]
-            object id)
+             params object[] id)
         { }
         #endregion
 
@@ -57,13 +43,8 @@ namespace ToDoList_API
         [ProducesDefaultResponseType(typeof(InternalServerError))]
         [ApiConventionNameMatch(ApiConventionNameMatchBehavior.Prefix)]
         public static void Create(
-            [ApiConventionNameMatch(ApiConventionNameMatchBehavior.Suffix)]
             [ApiConventionTypeMatch(ApiConventionTypeMatchBehavior.Any)]
-            object id,
-
-            [ApiConventionNameMatch(ApiConventionNameMatchBehavior.Suffix)]
-            [ApiConventionTypeMatch(ApiConventionTypeMatchBehavior.Any)]
-            object dto)
+            params object[] paramObjects)
         { }
 
         [ProducesResponseType(StatusCodes.Status204NoContent)]
@@ -118,25 +99,8 @@ namespace ToDoList_API
         [ProducesDefaultResponseType(typeof(InternalServerError))]
         [ApiConventionNameMatch(ApiConventionNameMatchBehavior.Prefix)]
         public static void Update(
-            [ApiConventionNameMatch(ApiConventionNameMatchBehavior.Suffix)]
             [ApiConventionTypeMatch(ApiConventionTypeMatchBehavior.Any)]
-            object dto)
-        { }
-
-        [ProducesResponseType(StatusCodes.Status204NoContent)]
-        [ProducesResponseType(typeof(BadRequestError), StatusCodes.Status400BadRequest)]
-        [ProducesResponseType(typeof(UnauthorizedError), StatusCodes.Status401Unauthorized)]
-        [ProducesResponseType(typeof(NotFoundError), StatusCodes.Status404NotFound)]
-        [ProducesDefaultResponseType(typeof(InternalServerError))]
-        [ApiConventionNameMatch(ApiConventionNameMatchBehavior.Prefix)]
-        public static void Update(
-            [ApiConventionNameMatch(ApiConventionNameMatchBehavior.Suffix)]
-            [ApiConventionTypeMatch(ApiConventionTypeMatchBehavior.Any)]
-            object id,
-
-            [ApiConventionNameMatch(ApiConventionNameMatchBehavior.Suffix)]
-            [ApiConventionTypeMatch(ApiConventionTypeMatchBehavior.Any)]
-            object dto)
+            params object[] paramObjects)
         { }
         #endregion
 
@@ -148,25 +112,8 @@ namespace ToDoList_API
         [ProducesDefaultResponseType(typeof(InternalServerError))]
         [ApiConventionNameMatch(ApiConventionNameMatchBehavior.Prefix)]
         public static void Delete(
-            [ApiConventionNameMatch(ApiConventionNameMatchBehavior.Suffix)]
             [ApiConventionTypeMatch(ApiConventionTypeMatchBehavior.Any)]
-            object dto)
-        { }
-
-        [ProducesResponseType(StatusCodes.Status204NoContent)]
-        [ProducesResponseType(typeof(BadRequestError), StatusCodes.Status400BadRequest)]
-        [ProducesResponseType(typeof(UnauthorizedError), StatusCodes.Status401Unauthorized)]
-        [ProducesResponseType(typeof(NotFoundError), StatusCodes.Status404NotFound)]
-        [ProducesDefaultResponseType(typeof(InternalServerError))]
-        [ApiConventionNameMatch(ApiConventionNameMatchBehavior.Prefix)]
-        public static void Delete(
-            [ApiConventionNameMatch(ApiConventionNameMatchBehavior.Suffix)]
-            [ApiConventionTypeMatch(ApiConventionTypeMatchBehavior.Any)]
-            object Id,
-
-            [ApiConventionNameMatch(ApiConventionNameMatchBehavior.Suffix)]
-            [ApiConventionTypeMatch(ApiConventionTypeMatchBehavior.Any)]
-            object id)
+            params object[] paramObjects)
         { }
         #endregion
     }

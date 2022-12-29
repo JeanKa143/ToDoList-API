@@ -11,33 +11,7 @@ namespace ToDoList_API.Tests.Mocks
         {
             var mock = new Mock<IUserRepository>();
 
-            var users = new List<AppUser>()
-            {
-                new AppUser
-                {
-                    Id = "c0a80121-7001-4b35-9a0c-05f5ec1b26e2",
-                    Email = "john_smith@mail.com",
-                    UserName = "john_smith@mail.com",
-                    FirstName = "John",
-                    LastName = "Smith"
-                },
-                new AppUser
-                {
-                    Id = "e4293f85-be32-42e3-a338-213c4a87d886",
-                    Email = "ana_mora@mail.com",
-                    UserName = "ana_mora@mail.com",
-                    FirstName = "Ana",
-                    LastName = "Mora"
-                },
-                new AppUser
-                {
-                    Id = "6934621e-7df1-44b4-bed6-f411b6e47487",
-                    Email = "juan_perez@mail.com",
-                    UserName = "juan_perez@mail.com",
-                    FirstName = "Juan",
-                    LastName = "Perez"
-                }
-            };
+            var users = Data.Users;
 
             mock.Setup(m => m.AddAsync(It.IsAny<AppUser>(), It.IsAny<string>()))
                 .Callback(() => { return; });

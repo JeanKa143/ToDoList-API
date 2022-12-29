@@ -19,7 +19,7 @@ namespace ToDoList_API.Tests.ControllerTests
         public async void GivenAnIdOfAnExistingTaskListGroup_WhenGetting_ThenTaskListGroupDtoReturns()
         {
             var taskListGroupId = 1;
-            var ownerId = Guid.Parse("b171ba77-2247-4112-9aeb-fd171a433b23");
+            var ownerId = Guid.Parse("6934621e-7df1-44b4-bed6-f411b6e47487");
 
             var result = (await _controller.Get(ownerId, taskListGroupId)).Result as ObjectResult;
 
@@ -36,7 +36,7 @@ namespace ToDoList_API.Tests.ControllerTests
         public async void GivenAnIdOfANonExistingTaskListGroup_WhenGetting_ThenNotFoundExceptionReturns()
         {
             var nonExistingTaskListGroupId = 999;
-            var existingOwnerId = Guid.Parse("b171ba77-2247-4112-9aeb-fd171a433b23");
+            var existingOwnerId = Guid.Parse("6934621e-7df1-44b4-bed6-f411b6e47487");
 
             var exception =
                 await Assert.ThrowsAsync<NotFoundException>(async () => await _controller.Get(existingOwnerId, nonExistingTaskListGroupId));
@@ -60,7 +60,7 @@ namespace ToDoList_API.Tests.ControllerTests
         public async void GivenAnIdOfAnExistingTaskListGroup_WhenGettingWithDetails_ThenDetailedTaskListGroupDtoReturns()
         {
             var taskListGroupId = 1;
-            var ownerId = Guid.Parse("b171ba77-2247-4112-9aeb-fd171a433b23");
+            var ownerId = Guid.Parse("6934621e-7df1-44b4-bed6-f411b6e47487");
 
             var result = (await _controller.GetWithDetails(ownerId, taskListGroupId)).Result as ObjectResult;
 
@@ -78,7 +78,7 @@ namespace ToDoList_API.Tests.ControllerTests
         public async void GivenAnIdOfANonExistingTaskListGroup_WhenGettingWithDetails_ThenNotFoundExceptionReturns()
         {
             var nonExistingTaskListGroupId = 999;
-            var existingOwnerId = Guid.Parse("b171ba77-2247-4112-9aeb-fd171a433b23");
+            var existingOwnerId = Guid.Parse("6934621e-7df1-44b4-bed6-f411b6e47487");
 
             var exception =
                 await Assert.ThrowsAsync<NotFoundException>(async () => await _controller.GetWithDetails(existingOwnerId, nonExistingTaskListGroupId));
@@ -101,7 +101,7 @@ namespace ToDoList_API.Tests.ControllerTests
         [Fact]
         public async void GivenAnIdOfAnExistingOwner_WhenGettingAll_ThenAllTaskListGroupDtoReturns()
         {
-            var ownerId = Guid.Parse("b171ba77-2247-4112-9aeb-fd171a433b23");
+            var ownerId = Guid.Parse("6934621e-7df1-44b4-bed6-f411b6e47487");
 
             var result = (await _controller.GetAll(ownerId)).Result as ObjectResult;
 
@@ -115,25 +115,20 @@ namespace ToDoList_API.Tests.ControllerTests
         }
 
         [Fact]
-        public async void GivenAnIdOfANonExistingOwner_WhenGettingAll_ThenEmptyListReturns()
+        public async void GivenAnIdOfANonExistingOwner_WhenGettingAll_ThenNotFoundExceptionReturns()
         {
-            var ownerId = Guid.Parse("01B6685E-269E-4A6E-B44F-C64F8956AEB2");
+            var nonEistingOwnerId = Guid.Parse("01B6685E-269E-4A6E-B44F-C64F8956AEB2");
 
-            var result = (await _controller.GetAll(ownerId)).Result as ObjectResult;
+            var exception =
+                await Assert.ThrowsAsync<NotFoundException>(async () => await _controller.GetAll(nonEistingOwnerId));
 
-            Assert.NotNull(result);
-            Assert.Equal(StatusCodes.Status200OK, result.StatusCode);
-            Assert.IsAssignableFrom<IEnumerable<TaskListGroupDto>>(result.Value);
-
-            var data = result.Value as IEnumerable<TaskListGroupDto>;
-            Assert.NotNull(data);
-            Assert.Equal(Enumerable.Empty<TaskListGroupDto>(), data);
+            Assert.Equal($"User with id ({nonEistingOwnerId}) was not found", exception.Message);
         }
 
         [Fact]
         public async void GivenAnIdOfAnExistingOwner_WhenGettingAllWithDetails_ThenAllDetailedTaskListGroupDtoReturns()
         {
-            var ownerId = Guid.Parse("b171ba77-2247-4112-9aeb-fd171a433b23");
+            var ownerId = Guid.Parse("6934621e-7df1-44b4-bed6-f411b6e47487");
 
             var result = (await _controller.GetAllWithDetails(ownerId)).Result as ObjectResult;
 
@@ -147,19 +142,14 @@ namespace ToDoList_API.Tests.ControllerTests
         }
 
         [Fact]
-        public async void GivenAnIdOfANonExistingOwner_WhenGettingAllWithDetails_ThenEmptyListReturns()
+        public async void GivenAnIdOfANonExistingOwner_WhenGettingAllWithDetails_ThenNotFoundExceptionReturns()
         {
-            var ownerId = Guid.Parse("01B6685E-269E-4A6E-B44F-C64F8956AEB2");
+            var nonEistingOwnerId = Guid.Parse("01B6685E-269E-4A6E-B44F-C64F8956AEB2");
 
-            var result = (await _controller.GetAllWithDetails(ownerId)).Result as ObjectResult;
+            var exception =
+                await Assert.ThrowsAsync<NotFoundException>(async () => await _controller.GetAllWithDetails(nonEistingOwnerId));
 
-            Assert.NotNull(result);
-            Assert.Equal(StatusCodes.Status200OK, result.StatusCode);
-            Assert.IsAssignableFrom<IEnumerable<DetailedTaskListGroupDto>>(result.Value);
-
-            var data = result.Value as IEnumerable<DetailedTaskListGroupDto>;
-            Assert.NotNull(data);
-            Assert.Equal(Enumerable.Empty<DetailedTaskListGroupDto>(), data);
+            Assert.Equal($"User with id ({nonEistingOwnerId}) was not found", exception.Message);
         }
 
         [Fact]
@@ -186,7 +176,7 @@ namespace ToDoList_API.Tests.ControllerTests
         [Fact]
         public async void GivenADifferentOwnerId_WhenCreating_ThenBadRequestReturns()
         {
-            var ownerId1 = Guid.Parse("b171ba77-2247-4112-9aeb-fd171a433b23");
+            var ownerId1 = Guid.Parse("6934621e-7df1-44b4-bed6-f411b6e47487");
             var ownerId2 = Guid.Parse("aa8a8a74-8c60-4508-a440-ea492abf6a55");
             var createTaskListGroupDto = new CreateTaskListGroupDto
             {
@@ -206,9 +196,26 @@ namespace ToDoList_API.Tests.ControllerTests
         }
 
         [Fact]
+        public async void GivenAnIdOfANonExistingOwner_WhenCreating_ThenNotFoundExceptionReturns()
+        {
+            var nonEistingOwnerId = Guid.Parse("01B6685E-269E-4A6E-B44F-C64F8956AEB2");
+
+            var createTaskListGroupDto = new CreateTaskListGroupDto
+            {
+                Name = "New TaskListGroup",
+                OwnerId = nonEistingOwnerId
+            };
+
+            var exception =
+                await Assert.ThrowsAsync<NotFoundException>(async () => await _controller.Create(nonEistingOwnerId, createTaskListGroupDto));
+
+            Assert.Equal($"User with id ({nonEistingOwnerId}) was not found", exception.Message);
+        }
+
+        [Fact]
         public async void GivenAnIdOfAnExistingTaskListGroup_WhenUpdating_ThenNoContentReturns()
         {
-            var ownerId = Guid.Parse("b171ba77-2247-4112-9aeb-fd171a433b23");
+            var ownerId = Guid.Parse("6934621e-7df1-44b4-bed6-f411b6e47487");
             var updateTaskListGroupDto = new UpdateTaskListGroupDto
             {
                 Id = 2,
@@ -225,7 +232,7 @@ namespace ToDoList_API.Tests.ControllerTests
         [Fact]
         public async void GivenAnIdOfADefaultTaskListGroup_WhenUpdating_ThenBadRequestExceptionReturns()
         {
-            var ownerId = Guid.Parse("b171ba77-2247-4112-9aeb-fd171a433b23");
+            var ownerId = Guid.Parse("6934621e-7df1-44b4-bed6-f411b6e47487");
             var updateTaskListGroupDto = new UpdateTaskListGroupDto
             {
                 Id = 1,
@@ -242,7 +249,7 @@ namespace ToDoList_API.Tests.ControllerTests
         [Fact]
         public async void GivenAnIdOfANonExistingTaskListGroup_WhenUpdating_ThenNotFoundExceptionReturns()
         {
-            var ownerId = Guid.Parse("b171ba77-2247-4112-9aeb-fd171a433b23");
+            var ownerId = Guid.Parse("6934621e-7df1-44b4-bed6-f411b6e47487");
             var nonExistingTaskListGroupId = 99;
             var updateTaskListGroupDto = new UpdateTaskListGroupDto
             {
@@ -278,7 +285,7 @@ namespace ToDoList_API.Tests.ControllerTests
         [Fact]
         public async void GivenADifferentOwnerId_WhenUpdating_ThenBadRequestReturns()
         {
-            var ownerId1 = Guid.Parse("b171ba77-2247-4112-9aeb-fd171a433b23");
+            var ownerId1 = Guid.Parse("6934621e-7df1-44b4-bed6-f411b6e47487");
             var ownerId2 = Guid.Parse("aa8a8a74-8c60-4508-a440-ea492abf6a55");
             var updateTaskListGroupDto = new UpdateTaskListGroupDto
             {
@@ -301,7 +308,7 @@ namespace ToDoList_API.Tests.ControllerTests
         [Fact]
         public async void GivenAnIdOfAnExistingTaskListGroup_WhenDeleting_ThenNoContentReturns()
         {
-            var ownerId = Guid.Parse("b171ba77-2247-4112-9aeb-fd171a433b23");
+            var ownerId = Guid.Parse("6934621e-7df1-44b4-bed6-f411b6e47487");
             var taskListGroupId = 2;
 
             var result = await _controller.Delete(ownerId, taskListGroupId) as StatusCodeResult;
@@ -313,7 +320,7 @@ namespace ToDoList_API.Tests.ControllerTests
         [Fact]
         public async void GivenAnIdOfADefaultTaskListGroup_WhenDeleting_ThenBadRequestExceptionReturns()
         {
-            var ownerId = Guid.Parse("b171ba77-2247-4112-9aeb-fd171a433b23");
+            var ownerId = Guid.Parse("6934621e-7df1-44b4-bed6-f411b6e47487");
             var taskListGroupId = 1;
 
             var exception =
@@ -325,7 +332,7 @@ namespace ToDoList_API.Tests.ControllerTests
         [Fact]
         public async void GivenAnIdOfANonExistingTaskListGroup_WhenDeleting_ThenNotFoundExceptionReturns()
         {
-            var ownerId = Guid.Parse("b171ba77-2247-4112-9aeb-fd171a433b23");
+            var ownerId = Guid.Parse("6934621e-7df1-44b4-bed6-f411b6e47487");
             var nonExistingTaskListGroupId = 99;
 
             var exception =

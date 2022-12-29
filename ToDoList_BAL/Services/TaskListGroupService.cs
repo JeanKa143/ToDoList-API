@@ -41,7 +41,7 @@ namespace ToDoList_BAL.Services
 
         public async Task<IEnumerable<TaskListGroupDto>> GetAllByOwnerIdAsync(Guid ownerId)
         {
-            await CheckIfUserExists(ownerId); //Todo: Test condition
+            await CheckIfUserExists(ownerId);
 
             IEnumerable<TaskListGroup> entities = await _taskListGroupRepository.GetAllByOwnerIdAsync(ownerId);
             return _mapper.Map<IEnumerable<TaskListGroupDto>>(entities);
@@ -49,7 +49,7 @@ namespace ToDoList_BAL.Services
 
         public async Task<IEnumerable<DetailedTaskListGroupDto>> GetAllWithDetailsByOwnerIdAsync(Guid ownerId)
         {
-            await CheckIfUserExists(ownerId); //Todo: Test condition
+            await CheckIfUserExists(ownerId);
 
             IEnumerable<TaskListGroup> entities = await _taskListGroupRepository.GetAllWithDetailsByOwnerIdAsync(ownerId);
             return _mapper.Map<IEnumerable<DetailedTaskListGroupDto>>(entities);
@@ -57,7 +57,7 @@ namespace ToDoList_BAL.Services
 
         public async Task<TaskListGroupDto> CreateAsync(CreateTaskListGroupDto createTaskListGroupDto)
         {
-            await CheckIfUserExists(createTaskListGroupDto.OwnerId); //Todo: Test condition
+            await CheckIfUserExists(createTaskListGroupDto.OwnerId);
 
             TaskListGroup entity = _mapper.Map<TaskListGroup>(createTaskListGroupDto);
             await _taskListGroupRepository.CreateAsync(entity);

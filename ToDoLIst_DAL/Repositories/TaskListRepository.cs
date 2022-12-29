@@ -24,20 +24,20 @@ namespace ToDoLIst_DAL.Repositories
             await AppDbContext.SaveChangesAsync();
         }
 
-        public async Task<IEnumerable<TaskList>> GetAllByOwnerIdAndGroupId(Guid ownerId, int groupId)
+        public async Task<IEnumerable<TaskList>> GetAllByOwnerIdAndGroupIdAsync(Guid ownerId, int groupId)
         {
             return await FindByCondition(t => t.GroupId.Equals(groupId) && t.Group!.OwnerId.Equals(ownerId.ToString()))
                 .AsNoTracking()
                 .ToListAsync();
         }
 
-        public async Task<TaskList?> GetByIdAndOwnerId(int id, Guid ownerId)
+        public async Task<TaskList?> GetByIdAndOwnerIdAsync(int id, Guid ownerId)
         {
             return await FindByCondition(t => t.Group!.OwnerId.Equals(ownerId.ToString()))
                 .FirstOrDefaultAsync();
         }
 
-        public async Task<TaskList?> GetWithDetailsByIdAndOwnerId(int id, Guid ownerId)
+        public async Task<TaskList?> GetWithDetailsByIdAndOwnerIdAsync(int id, Guid ownerId)
         {
             return await FindByCondition(t => t.Group!.OwnerId.Equals(ownerId.ToString()))
                 .Include(t => t.TaskItems)

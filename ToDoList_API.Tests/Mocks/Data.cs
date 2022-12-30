@@ -4,7 +4,6 @@ namespace ToDoList_API.Tests.Mocks
 {
     internal static class Data
     {
-
         public static List<AppUser> Users =>
             new()
             {
@@ -43,37 +42,83 @@ namespace ToDoList_API.Tests.Mocks
                     IsDefault = true,
                     Name = "Default",
                     OwnerId = "6934621e-7df1-44b4-bed6-f411b6e47487",
-                    TaskLists = new HashSet<TaskList>
-                    {
-                        new TaskList
-                        {
-                            Id = 1,
-                            IsDefault = true,
-                            Name = "Default",
-                            GroupId = 1,
-                        },
-                        new TaskList
-                        {
-                            Id = 2,
-                            IsDefault = false,
-                            Name = "TL1",
-                            GroupId = 1,
-                        },
-                        new TaskList
-                        {
-                            Id = 3,
-                            IsDefault = false,
-                            Name = "TL2",
-                            GroupId = 1,
-                        }
-                    }
+                    TaskLists = TaskLists.Where(tl => tl.GroupId == 1).ToHashSet()
                 },
                 new TaskListGroup
                 {
                     Id = 2,
                     IsDefault = false,
                     Name = "TLG1",
-                    OwnerId = "6934621e-7df1-44b4-bed6-f411b6e47487",
+                    OwnerId = "6934621e-7df1-44b4-bed6-f411b6e47487"
+                }
+            };
+
+        public static List<TaskList> TaskLists =>
+            new()
+            {
+                new TaskList
+                {
+                    Id = 1,
+                    IsDefault = true,
+                    Name = "Default",
+                    GroupId = 1,
+                    TaskItems = TaskItems.Where(ti => ti.TaskListId == 1).ToHashSet()
+                },
+                new TaskList
+                {
+                    Id = 2,
+                    IsDefault = false,
+                    Name = "TL1",
+                    GroupId = 1
+                },
+                new TaskList
+                {
+                    Id = 3,
+                    IsDefault = false,
+                    Name = "TL2",
+                    GroupId = 1
+                },
+                new TaskList
+                {
+                    Id = 4,
+                    IsDefault = false,
+                    Name = "TL3",
+                    GroupId = 2
+                }
+            };
+
+        public static List<TaskItem> TaskItems =>
+            new()
+            {
+                new TaskItem
+                {
+                    Id = 1,
+                    Description = "Task 1",
+                    AddedDate = DateTime.Now,
+                    IsImportant = false,
+                    IsInMyDay = false,
+                    IsDone = false,
+                    TaskListId = 1
+                },
+                new TaskItem
+                {
+                    Id = 2,
+                    Description = "Task 2",
+                    AddedDate = DateTime.Now,
+                    IsImportant = false,
+                    IsInMyDay = false,
+                    IsDone = false,
+                    TaskListId = 1
+                },
+                new TaskItem
+                {
+                    Id = 3,
+                    Description = "Task 3",
+                    AddedDate = DateTime.Now,
+                    IsImportant = false,
+                    IsInMyDay = false,
+                    IsDone = false,
+                    TaskListId = 1
                 }
             };
     }

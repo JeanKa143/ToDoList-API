@@ -11,6 +11,7 @@ namespace ToDoList_DAL.Repositories
 
         private ITaskListGroupRepository? _taskListGroups;
         private ITaskListRepository? _taskLists;
+        private ITaskItemRepository? _taskItems;
 
         public UnitOfWork(AppDbContext context)
         {
@@ -20,6 +21,8 @@ namespace ToDoList_DAL.Repositories
         public ITaskListGroupRepository TaskListGroups => _taskListGroups ??= new TaskListGroupRepository(_context);
 
         public ITaskListRepository TaskLists => _taskLists ??= new TaskListRepository(_context);
+
+        public ITaskItemRepository TaskItems => _taskItems ??= new TaskItemRepository(_context);
 
         public void Dispose()
         {

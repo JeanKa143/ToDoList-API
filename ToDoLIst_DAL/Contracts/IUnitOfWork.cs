@@ -6,6 +6,7 @@ namespace ToDoList_DAL.Contracts
     {
         ITaskListGroupRepository TaskListGroups { get; }
         ITaskListRepository TaskLists { get; }
+        ITaskItemRepository TaskItems { get; }
         Task SaveAsync();
     }
 }

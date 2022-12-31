@@ -33,7 +33,7 @@ namespace ToDoLIst_DAL.Repositories
                 .FirstOrDefaultAsync();
         }
 
-        public async Task<bool> IsAnyWithGroupIdAndListId(int groupId, int listId)
+        public async Task<bool> IsAnyWithGroupIdAndListIdAsync(int groupId, int listId)
         {
             return await FindByCondition(t => t.GroupId.Equals(groupId) && t.Id.Equals(listId))
                 .AnyAsync();

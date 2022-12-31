@@ -20,7 +20,7 @@ namespace ToDoList_API.Tests.Mocks
             mock.Setup(m => m.GetAllByGroupIdAsync(It.IsAny<int>()))
                 .ReturnsAsync((int groupId) => data.Where(tl => tl.GroupId == groupId).ToList());
 
-            mock.Setup(m => m.IsAnyWithGroupIdAndListId(It.IsAny<int>(), It.IsAny<int>()))
+            mock.Setup(m => m.IsAnyWithGroupIdAndListIdAsync(It.IsAny<int>(), It.IsAny<int>()))
                 .ReturnsAsync((int groupId, int listId) => data.Any(tl => tl.GroupId == groupId && tl.Id == listId));
 
             mock.Setup(m => m.Create(It.IsAny<TaskList>()))

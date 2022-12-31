@@ -8,6 +8,6 @@ namespace ToDoLIst_DAL.Contracts
         public Task<TaskList?> GetWithDetailsByIdAndGroupIdAsync(int id, int groupId);
         public Task<IEnumerable<TaskList>> GetAllByGroupIdAsync(int groupId);
 
-        public Task<bool> IsAnyWithGroupIdAndListId(int groupId, int listId);
+        public Task<bool> IsAnyWithGroupIdAndListIdAsync(int groupId, int listId);
     }
 }

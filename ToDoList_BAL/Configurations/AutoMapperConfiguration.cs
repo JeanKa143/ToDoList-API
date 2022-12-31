@@ -3,6 +3,7 @@ using ToDoList_BAL.Models.AppUser;
 using ToDoList_BAL.Models.TaskItem;
 using ToDoList_BAL.Models.TaskList;
 using ToDoList_BAL.Models.TaskListGroup;
+using ToDoList_BAL.Models.TaskStep;
 using ToDoLIst_DAL.Entities;
 
 namespace ToDoList_BAL.Configurations
@@ -30,6 +31,12 @@ namespace ToDoList_BAL.Configurations
 
 
             CreateMap<TaskItem, TaskItemDto>();
+            CreateMap<TaskItem, DetailedTaskItemDto>();
+            CreateMap<CreateTaskItemDto, TaskItem>();
+            CreateMap<UpdateTaskItemDto, TaskItem>();
+
+
+            CreateMap<TaskStep, TaskStepDto>();
         }
     }
 }

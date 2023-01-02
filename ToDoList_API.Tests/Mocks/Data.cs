@@ -98,7 +98,8 @@ namespace ToDoList_API.Tests.Mocks
                     IsImportant = false,
                     IsInMyDay = false,
                     IsDone = false,
-                    TaskListId = 1
+                    TaskListId = 1,
+                    TaskSteps = TaksSteps.Where(ts => ts.TaskItemId == 1).ToHashSet()
                 },
                 new TaskItem
                 {
@@ -119,6 +120,29 @@ namespace ToDoList_API.Tests.Mocks
                     IsInMyDay = false,
                     IsDone = false,
                     TaskListId = 1
+                }
+            };
+
+        public static List<TaskStep> TaksSteps =>
+            new()
+            {
+                new TaskStep
+                {
+                    Id = 1,
+                    Description = "Step 1",
+                    TaskItemId = 1
+                },
+                new TaskStep
+                {
+                    Id = 2,
+                    Description = "Step 2",
+                    TaskItemId = 1
+                },
+                new TaskStep
+                {
+                    Id = 3,
+                    Description = "Step 3",
+                    TaskItemId = 1
                 }
             };
     }

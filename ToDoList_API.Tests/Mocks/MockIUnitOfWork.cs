@@ -15,6 +15,9 @@ namespace ToDoList_API.Tests.Mocks
             mock.Setup(m => m.TaskLists)
                 .Returns(MockITaskListRepository.GetMock().Object);
 
+            mock.Setup(m => m.TaskItems)
+                .Returns(MockITaskItemRepository.GetMock().Object);
+
             mock.Setup(m => m.SaveAsync())
                 .Callback(() => { return; });
 

@@ -25,6 +25,8 @@ builder.Services.AddScoped<UserService>();
 builder.Services.AddScoped<TaskListGroupService>();
 builder.Services.AddScoped<TaskListService>();
 builder.Services.AddScoped<TaskItemService>();
+builder.Services.AddScoped<TaskStepService>();
+
 
 builder.Services.AddScoped<ValidateRouteUserIdFilter>();
 builder.Services.AddScoped(typeof(ValidateDtoIdFilter<>));

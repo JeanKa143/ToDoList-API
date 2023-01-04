@@ -37,6 +37,7 @@ namespace ToDoList_BAL.Configurations
 
 
             CreateMap<TaskStep, TaskStepDto>();
+            CreateMap<CreateOrUpdateTaskStepDto, TaskStep>();
         }
     }
 }

@@ -14,6 +14,6 @@
         public int TaskListId { get; set; }
         public TaskList? TaskList { get; set; }
 
-        public HashSet<TaskStep>? TaskSteps { get; set; }
+        public List<TaskStep>? TaskSteps { get; set; }
     }
 }

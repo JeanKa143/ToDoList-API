@@ -99,7 +99,7 @@ namespace ToDoList_API.Tests.Mocks
                     IsInMyDay = false,
                     IsDone = false,
                     TaskListId = 1,
-                    TaskSteps = TaksSteps.Where(ts => ts.TaskItemId == 1).ToHashSet()
+                    TaskSteps = TaksSteps.Where(ts => ts.TaskItemId == 1).ToList()
                 },
                 new TaskItem
                 {

@@ -8,6 +8,7 @@ namespace ToDoLIst_DAL.Contracts
         IQueryable<T> FindByCondition(Expression<Func<T, bool>> expression);
         void Create(T entity);
         void Update(T entity);
+        void UpdateRange(IEnumerable<T> entities);
         void Delete(T entity);
     }
 }

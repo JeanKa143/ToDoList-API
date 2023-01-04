@@ -23,5 +23,7 @@ namespace ToDoLIst_DAL.Repositories
         public void Update(T entity) => AppDbContext.Set<T>().Update(entity);
 
         public void Delete(T entity) => AppDbContext.Set<T>().Remove(entity);
+
+        public void UpdateRange(IEnumerable<T> entities) => AppDbContext.Set<T>().UpdateRange(entities);
     }
 }

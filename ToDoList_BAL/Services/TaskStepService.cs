@@ -33,6 +33,9 @@ namespace ToDoList_BAL.Services
                 .Select(x => x.Id)
                 .ToArray();
 
+            if (dtoIds.Length != dtoIds.Distinct().Count())
+                throw new BadRequestException("The list of task steps contains duplicated ids");
+
             if ((dtoIds.Length > 0) && (dtoIds.Length != await _unitOfWork.TaskSteps.CountByIdsAndTaskItemIdAsync(dtoIds, taskId)))
                 throw new NotFoundException("One or more TaskStep were not found");
 
@@ -50,6 +53,9 @@ namespace ToDoList_BAL.Services
         public async Task DeleteAsync(Guid ownerId, int groupId, int listId, int taskId, int[] ids)
         {
             await CheckIfTaskItemExistAsync(ownerId, groupId, listId, taskId);
+
+            if (ids.Length != ids.Distinct().Count())
+                throw new BadRequestException("The list of task step ids contains duplicated values");
 
             if (ids.Length != await _unitOfWork.TaskSteps.CountByIdsAndTaskItemIdAsync(ids, taskId))
                 throw new NotFoundException("One or more TaskStep were not found");

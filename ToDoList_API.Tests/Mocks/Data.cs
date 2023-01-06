@@ -99,7 +99,7 @@ namespace ToDoList_API.Tests.Mocks
                     IsInMyDay = false,
                     IsDone = false,
                     TaskListId = 1,
-                    TaskSteps = TaksSteps.Where(ts => ts.TaskItemId == 1).ToList()
+                    TaskSteps = TakSteps.Where(ts => ts.TaskItemId == 1).ToList()
                 },
                 new TaskItem
                 {
@@ -109,7 +109,8 @@ namespace ToDoList_API.Tests.Mocks
                     IsImportant = false,
                     IsInMyDay = false,
                     IsDone = false,
-                    TaskListId = 1
+                    TaskListId = 1,
+                    TaskSteps = TakSteps.Where(ts => ts.TaskItemId == 2).ToList()
                 },
                 new TaskItem
                 {
@@ -123,26 +124,36 @@ namespace ToDoList_API.Tests.Mocks
                 }
             };
 
-        public static List<TaskStep> TaksSteps =>
+        public static List<TaskStep> TakSteps =>
             new()
             {
                 new TaskStep
                 {
                     Id = 1,
                     Description = "Step 1",
-                    TaskItemId = 1
+                    TaskItemId = 1,
+                    Position = 0
                 },
                 new TaskStep
                 {
                     Id = 2,
                     Description = "Step 2",
-                    TaskItemId = 1
+                    TaskItemId = 1,
+                    Position = 1
                 },
                 new TaskStep
                 {
                     Id = 3,
                     Description = "Step 3",
-                    TaskItemId = 1
+                    TaskItemId = 1,
+                    Position = 2
+                },
+                new TaskStep
+                {
+                    Id = 4,
+                    Description = "Step 1",
+                    TaskItemId = 2,
+                    Position = 0
                 }
             };
     }

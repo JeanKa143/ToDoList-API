@@ -1,3 +1,4 @@
+using EmailService;
 using ToDoList_API.Extensions;
 using ToDoList_API.Filters;
 using ToDoList_API.Middlewares;
@@ -18,6 +19,8 @@ builder.Services.ConfigureSwaggerGen();
 
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
+builder.Services.AddScoped<IEmailSender, EmailSender>();
+
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 
@@ -33,6 +36,7 @@ builder.Services.AddScoped(typeof(ValidateDtoIdFilter<>));
 
 builder.Services.ConfigureAuthentication(builder.Configuration);
 
+builder.Services.ConfigureEmailService(builder.Configuration);
 builder.Services.ConfigureControllers();
 
 var app = builder.Build();

@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
+﻿using EmailService;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -113,6 +114,14 @@ namespace ToDoList_API.Extensions
                             ContentTypes = { Application.Json }
                         };
                 });
+        }
+
+        public static void ConfigureEmailService(this IServiceCollection services, IConfiguration configuration)
+        {
+            var emailConfig = configuration
+                .GetSection("EmailConfiguration")
+                .Get<EmailConfiguration>();
+            services.AddSingleton(emailConfig);
         }
     }
 }

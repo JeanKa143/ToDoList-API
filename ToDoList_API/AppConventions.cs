@@ -102,6 +102,24 @@ namespace ToDoList_API
             [ApiConventionTypeMatch(ApiConventionTypeMatchBehavior.Any)]
             params object[] paramObjects)
         { }
+
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(typeof(BadRequestError), StatusCodes.Status400BadRequest)]
+        [ProducesDefaultResponseType(typeof(InternalServerError))]
+        [ApiConventionNameMatch(ApiConventionNameMatchBehavior.Prefix)]
+        public static void ForgotPassword(
+            [ApiConventionTypeMatch(ApiConventionTypeMatchBehavior.Any)]
+            params object[] paramObjects)
+        { }
+
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(typeof(BadRequestError), StatusCodes.Status400BadRequest)]
+        [ProducesDefaultResponseType(typeof(InternalServerError))]
+        [ApiConventionNameMatch(ApiConventionNameMatchBehavior.Prefix)]
+        public static void ResetPassword(
+            [ApiConventionTypeMatch(ApiConventionTypeMatchBehavior.Any)]
+            params object[] paramObjects)
+        { }
         #endregion
 
         #region DELETE

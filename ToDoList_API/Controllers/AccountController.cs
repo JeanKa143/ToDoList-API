@@ -80,6 +80,24 @@ namespace ToDoList_API.Controllers
                 : NoContent();
         }
 
+        [AllowAnonymous]
+        [HttpPut("forgot-password")]
+        public async Task<IActionResult> ForgotPassword([FromBody] ForgotPasswordDto forgotPasswordDto)
+        {
+            await _userService.ForgotPassword(forgotPasswordDto);
+            return NoContent();
+        }
+
+        [AllowAnonymous]
+        [HttpPut("reset-password")]
+        public async Task<IActionResult> ResetPassword([FromBody] ResetPasswordDto resetPasswordDto)
+        {
+            IEnumerable<IdentityError> errors = await _userService.ResetPassword(resetPasswordDto);
+            return errors.Any()
+                ? BadRequest(new IdentityBadRequestError(errors, nameof(ResetPasswordDto)))
+                : NoContent();
+        }
+
         [HttpDelete("{id}")]
         [ServiceFilter(typeof(ValidateRouteUserIdFilter))]
         [ServiceFilter(typeof(ValidateDtoIdFilter<Guid>))]

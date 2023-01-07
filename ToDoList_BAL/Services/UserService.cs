@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using EmailService;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
@@ -19,12 +20,14 @@ namespace ToDoList_BAL.Services
         private readonly IUserRepository _userRepository;
         private readonly IMapper _mapper;
         private readonly IConfiguration _configuration;
+        private readonly IEmailSender _emailSender;
 
-        public UserService(IUserRepository userRepository, IMapper mapper, IConfiguration configuration)
+        public UserService(IUserRepository userRepository, IMapper mapper, IConfiguration configuration, IEmailSender emailSender)
         {
             _userRepository = userRepository;
             _mapper = mapper;
             _configuration = configuration;
+            _emailSender = emailSender;
         }
 
         public async Task<IEnumerable<IdentityError>> AddAsync(CreateUserDto createUserDto)
@@ -73,6 +76,31 @@ namespace ToDoList_BAL.Services
                 await _userRepository.UpdatePasswordAsync(user, updatePasswordDto.OldPassword, updatePasswordDto.NewPassword);
 
             return errors;
+        }
+
+        public async Task ForgotPassword(ForgotPasswordDto forgotPasswordDto)
+        {
+            AppUser? user = await _userRepository.GetByEmailAsync(forgotPasswordDto.Email);
+
+            if (user == null)
+                return;
+
+            string token = await _userRepository.GeneratePasswordResetTokenAsync(user);
+            string emailContent = $"Use the following token to reset your password: <span style='color: red'>{token}</span>";
+
+            await _emailSender.SendEmailAsync(new Message(user.Email, "Reset Password Token", emailContent));
+        }
+
+        public async Task<IEnumerable<IdentityError>> ResetPassword(ResetPasswordDto resetPasswordDto)
+        {
+            AppUser? user = await _userRepository.GetByEmailAsync(resetPasswordDto.Email);
+            if (user == null)
+                return Enumerable.Empty<IdentityError>();
+
+            IdentityResult resetPasswordResult =
+                await _userRepository.ResetPasswordAsync(user, resetPasswordDto.Token, resetPasswordDto.Password);
+
+            return resetPasswordResult.Errors;
         }
 
         public async Task<IEnumerable<IdentityError>> DeleteAsync(DeleteUserDto deleteUserDto)

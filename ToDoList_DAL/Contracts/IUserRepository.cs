@@ -17,5 +17,7 @@ namespace ToDoLIst_DAL.Contracts
         Task<bool> CheckPasswordAsync(AppUser user, string password);
         Task<bool> VerifyTokenAsync(AppUser user, string token, string provider, string purpose);
         Task<string> CreateTokenAsync(AppUser user, string provider, string purpose);
+        Task<string> GeneratePasswordResetTokenAsync(AppUser user);
+        Task<IdentityResult> ResetPasswordAsync(AppUser user, string token, string newPassword);
     }
 }

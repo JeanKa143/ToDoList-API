@@ -16,5 +16,16 @@ namespace EmailService
             Subject = subject;
             Content = content;
         }
+
+        public Message(string to, string subject, string content)
+        {
+            To = new List<MailboxAddress>
+            {
+                new MailboxAddress(null, to)
+            };
+
+            Subject = subject;
+            Content = content;
+        }
     }
 }

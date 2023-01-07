@@ -180,7 +180,7 @@ namespace ToDoList_API.Tests.ControllerTests
         private static UserService GetUserService()
         {
             var mock = MockIUserRepository.GetMock();
-            return new UserService(mock.Object, Utils.GetMapper(), Utils.GetConfiguration());
+            return new UserService(mock.Object, Utils.GetMapper(), Utils.GetConfiguration(), null);
         }
     }
 }

@@ -24,6 +24,9 @@ namespace ToDoList_API.Errors
                     AddErrorsToDictionary(dictionary, nameof(UpdateUserPasswordDto.OldPassword), GetOldPasswordErrors(errors));
                     AddErrorsToDictionary(dictionary, nameof(UpdateUserPasswordDto.NewPassword), GetNewPasswordErrors(errors));
                     break;
+                case nameof(ResetPasswordDto):
+                    AddErrorsToDictionary(dictionary, nameof(ResetPasswordDto.Password), GetNewPasswordErrors(errors));
+                    break;
                 default:
                     break;
             }

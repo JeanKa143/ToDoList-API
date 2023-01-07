@@ -29,6 +29,11 @@ namespace ToDoList_API.Extensions
                 .AddTokenProvider<DataProtectorTokenProvider<AppUser>>("ToDoListAPI")
                 .AddEntityFrameworkStores<AppDbContext>()
                 .AddDefaultTokenProviders();
+
+            services.Configure<DataProtectionTokenProviderOptions>(options =>
+            {
+                options.TokenLifespan = TimeSpan.FromHours(2);
+            });
         }
 
         public static void ConfigureSwaggerGen(this IServiceCollection services)

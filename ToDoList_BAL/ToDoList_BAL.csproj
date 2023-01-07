@@ -11,6 +11,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\EmailService\EmailService.csproj" />
     <ProjectReference Include="..\ToDoLIst_DAL\ToDoList_DAL.csproj" />
   </ItemGroup>
 

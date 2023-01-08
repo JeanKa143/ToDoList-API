@@ -62,6 +62,36 @@ namespace ToDoList_API.Tests.ModelTests
             Assert.Equal(isValid, ValidateModel(user));
         }
 
+        [Theory]
+        [InlineData(null, false)]
+        [InlineData("", false)]
+        [InlineData("NotAnEmail", false)]
+        [InlineData("email@mail.com", true)]
+        public void TestForgotPasswordModelValidation(string email, bool isValid)
+        {
+            var user = new ForgotPasswordDto
+            {
+                Email = email
+            };
+
+            Assert.Equal(isValid, ValidateModel(user));
+        }
+
+        [Theory]
+        [MemberData(nameof(ResetPasswordData))]
+        public void TestResetPasswordModelValidation(string email, string password, string confirmPassword, string token, bool isValid)
+        {
+            var user = new ResetPasswordDto
+            {
+                Email = email,
+                Password = password,
+                ConfirmPassword = confirmPassword,
+                Token = token
+            };
+
+            Assert.Equal(isValid, ValidateModel(user));
+        }
+
         public static IEnumerable<object[]> CreateUesarData =>
             new List<object[]>
             {
@@ -105,6 +135,17 @@ namespace ToDoList_API.Tests.ModelTests
                 new object[] { Guid.NewGuid(), null, "newPassword", "newPassword", false },
                 new object[] { Guid.NewGuid(), "oldPassword", "newPassword", "differentPassword", false },
                 new object[] { Guid.NewGuid(), "oldPassword", "newPassword", "newPassword", true }
+            };
+
+        public static IEnumerable<object[]> ResetPasswordData =>
+            new List<object[]>
+            {
+                new object[] { null, null, null, null, false },
+                new object[] { "", "", "", "", false },
+                new object[] { "NotAnEmail", "Password", "Password", "Token", false },
+                new object[] { "email@mail.com", "Password", "DifferentPassword", "Token", false },
+                new object[] { "email@mail.com", "Password", "DifferentPassword", null, false },
+                new object[] { "email@mail.com", "Password", "Password", "Token", true }
             };
 
         private static bool ValidateModel(object model) => Utils.ValidateModel(model);

@@ -149,6 +149,68 @@ namespace ToDoList_API.Tests.ControllerTests
         }
 
         [Fact]
+        public async void GivenAValidData_WhenForgotPassword_ThenNoContentReturns()
+        {
+            var dto = new ForgotPasswordDto
+            {
+                Email = "john_smith@mail.com"
+            };
+
+            var result = await _controller.ForgotPassword(dto) as StatusCodeResult;
+
+            Assert.NotNull(result);
+            Assert.Equal(StatusCodes.Status204NoContent, result.StatusCode);
+        }
+
+        [Fact]
+        public async void GivenAnEmailOfANonExistingUser_WhenForgotPassword_ThenNoContentReturns()
+        {
+            var dto = new ForgotPasswordDto
+            {
+                Email = "non_existent_user@mail.com"
+            };
+
+            var result = await _controller.ForgotPassword(dto) as StatusCodeResult;
+
+            Assert.NotNull(result);
+            Assert.Equal(StatusCodes.Status204NoContent, result.StatusCode);
+        }
+
+        [Fact]
+        public async void GivenAValidData_WhenResettingPassword_ThenNoContentReturns()
+        {
+            var dto = new ResetPasswordDto
+            {
+                Email = "john_smith@mail.com",
+                Password = "NewPassword",
+                ConfirmPassword = "NewPassword",
+                Token = "TestToken"
+            };
+
+            var result = await _controller.ResetPassword(dto) as StatusCodeResult;
+
+            Assert.NotNull(result);
+            Assert.Equal(StatusCodes.Status204NoContent, result.StatusCode);
+        }
+
+        [Fact]
+        public async void GivenAnEmailOfANonExistingUser_WhenResettingPassword_ThenNoContentReturns()
+        {
+            var dto = new ResetPasswordDto
+            {
+                Email = "non_existent_user@mail.com",
+                Password = "NewPassword",
+                ConfirmPassword = "NewPassword",
+                Token = "TestToken"
+            };
+
+            var result = await _controller.ResetPassword(dto) as StatusCodeResult;
+
+            Assert.NotNull(result);
+            Assert.Equal(StatusCodes.Status204NoContent, result.StatusCode);
+        }
+
+        [Fact]
         public async void GivenAnIdOfAnExistingUser_WhenDeleting_ThenNoContentReturns()
         {
             var userId = Guid.Parse("c0a80121-7001-4b35-9a0c-05f5ec1b26e2");
@@ -179,8 +241,10 @@ namespace ToDoList_API.Tests.ControllerTests
 
         private static UserService GetUserService()
         {
-            var mock = MockIUserRepository.GetMock();
-            return new UserService(mock.Object, Utils.GetMapper(), Utils.GetConfiguration(), null);
+            var mockIUserRepository = MockIUserRepository.GetMock();
+            var mockIEmailSender = MockIMailSender.GetMock();
+
+            return new UserService(mockIUserRepository.Object, Utils.GetMapper(), Utils.GetConfiguration(), mockIEmailSender.Object);
         }
     }
 }

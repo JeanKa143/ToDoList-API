@@ -1,4 +1,5 @@
-﻿using Moq;
+﻿using Microsoft.AspNetCore.Identity;
+using Moq;
 using System.Security.Claims;
 using ToDoLIst_DAL.Contracts;
 using ToDoLIst_DAL.Entities;
@@ -36,6 +37,12 @@ namespace ToDoList_API.Tests.Mocks
 
             mock.Setup(m => m.CreateTokenAsync(It.IsAny<AppUser>(), It.IsAny<string>(), It.IsAny<string>()))
                 .ReturnsAsync("TestToken");
+
+            mock.Setup(m => m.GeneratePasswordResetTokenAsync(It.IsAny<AppUser>()))
+                .ReturnsAsync("TestToken");
+
+            mock.Setup(m => m.ResetPasswordAsync(It.IsAny<AppUser>(), It.IsAny<string>(), It.IsAny<string>()))
+                .ReturnsAsync(new IdentityResult());
 
             return mock;
         }

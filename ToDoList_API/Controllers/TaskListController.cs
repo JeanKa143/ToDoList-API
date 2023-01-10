@@ -1,4 +1,4 @@
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using ToDoList_API.Errors;
 using ToDoList_API.Filters;
@@ -50,7 +50,7 @@ namespace ToDoList_API.Controllers
                     new BadRequestError("The group id of the DTO cannot be different from the group id of the route"));
 
             TaskListDto data = await _taskListService.CreateAsync(userId, createTaskListDto);
-            return CreatedAtAction(nameof(Get), new { UserId = userId, data.Id }, data);
+            return CreatedAtAction(nameof(Get), new { userId, groupId, data.Id }, data);
         }
 
         [HttpPut("{id}")]

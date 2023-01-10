@@ -1,4 +1,4 @@
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using ToDoList_API.Errors;
 using ToDoList_API.Filters;
@@ -50,7 +50,7 @@ namespace ToDoList_API.Controllers
                     new BadRequestError("The list id of the DTO cannot be different from the list id of the route"));
 
             TaskItemDto data = await _taskItemService.CreateAsync(userId, groupId, createTaskItemDto);
-            return CreatedAtAction(nameof(Get), new { UserId = userId, data.Id }, data);
+            return CreatedAtAction(nameof(Get), new { userId, groupId, listId, data.Id }, data);
         }
 
         [HttpPut("{id}")]

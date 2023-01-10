@@ -29,8 +29,7 @@ namespace ToDoList_DAL.Repositories
         public async Task<TaskItem?> GetWithDetailsByIdAndListIdAsync(int id, int listId)
         {
             return await FindByCondition(t => t.Id.Equals(id) && t.TaskListId.Equals(listId))
-                .Include(t => t.TaskSteps)
-                .OrderBy(t => t.TaskSteps!.OrderBy(s => s.Position))
+                .Include(t => t.TaskSteps!.OrderBy(ts => ts.Position))
                 .AsNoTracking()
                 .FirstOrDefaultAsync();
         }

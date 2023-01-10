@@ -11,7 +11,7 @@ namespace ToDoList_API.Controllers
     [Authorize]
     [ApiConventionType(typeof(AppConventions))]
     [ServiceFilter(typeof(ValidateRouteUserIdFilter))]
-    [Route("api/user/{userId}/task-list-group/{groupId}/task-list/{listId}/task/{taskId}/step")]
+    [Route("api/users/{userId}/task-list-groups/{groupId}/task-lists/{listId}/tasks/{taskId}/steps")]
     public class TaskStepController : ControllerBase
     {
         private readonly TaskStepService _taskStepService;
@@ -21,7 +21,7 @@ namespace ToDoList_API.Controllers
             _taskStepService = taskStepService;
         }
 
-        [HttpGet("all")]
+        [HttpGet]
         public async Task<ActionResult<IEnumerable<TaskStepDto>>> GetAllByTaskItem([FromRoute] Guid userId, [FromRoute] int groupId,
             [FromRoute] int listId, [FromRoute] int taskId)
         {

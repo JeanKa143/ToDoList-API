@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using ToDoList_API.Errors;
 using ToDoList_API.Filters;
@@ -11,7 +11,7 @@ namespace ToDoList_API.Controllers
     [Authorize]
     [ApiConventionType(typeof(AppConventions))]
     [ServiceFilter(typeof(ValidateRouteUserIdFilter))]
-    [Route("api/user/{userId}/task-list-group/{groupId}/task-list")]
+    [Route("api/users/{userId}/task-list-groups/{groupId}/task-lists")]
     public class TaskListController : ControllerBase
     {
         private readonly TaskListService _taskListService;
@@ -35,7 +35,7 @@ namespace ToDoList_API.Controllers
             return Ok(data);
         }
 
-        [HttpGet("all")]
+        [HttpGet]
         public async Task<ActionResult<IEnumerable<TaskListDto>>> GetAllByGroup([FromRoute] Guid userId, [FromRoute] int groupId)
         {
             IEnumerable<TaskListDto> data = await _taskListService.GetAllByGroupIdAsync(userId, groupId);

@@ -12,7 +12,7 @@ namespace ToDoList_API.Controllers
     [ApiController]
     [Authorize]
     [ApiConventionType(typeof(AppConventions))]
-    [Route("api/user")]
+    [Route("api/users")]
     public class AccountController : ControllerBase
     {
         private readonly UserService _userService;

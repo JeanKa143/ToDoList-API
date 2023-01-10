@@ -11,7 +11,7 @@ namespace ToDoList_API.Controllers
     [Authorize]
     [ApiConventionType(typeof(AppConventions))]
     [ServiceFilter(typeof(ValidateRouteUserIdFilter))]
-    [Route("api/user/{userId}/task-list-group")]
+    [Route("api/users/{userId}/task-list-groups")]
     public class TaskListGroupController : ControllerBase
     {
         private readonly TaskListGroupService _taskListGroupService;
@@ -35,14 +35,14 @@ namespace ToDoList_API.Controllers
             return Ok(data);
         }
 
-        [HttpGet("all")]
+        [HttpGet]
         public async Task<ActionResult<IEnumerable<TaskListGroupDto>>> GetAll([FromRoute] Guid userId)
         {
             IEnumerable<TaskListGroupDto> data = await _taskListGroupService.GetAllByOwnerIdAsync(userId);
             return Ok(data);
         }
 
-        [HttpGet("all/detailed")]
+        [HttpGet("detailed")]
         public async Task<ActionResult<IEnumerable<DetailedTaskListGroupDto>>> GetAllWithDetails([FromRoute] Guid userId)
         {
             IEnumerable<DetailedTaskListGroupDto> data = await _taskListGroupService.GetAllWithDetailsByOwnerIdAsync(userId);

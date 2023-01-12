@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using ToDoList_BAL.Validations;
 
 namespace ToDoList_BAL.Models.AppUser
 {
@@ -11,6 +12,7 @@ namespace ToDoList_BAL.Models.AppUser
         public string OldPassword { get; set; } = string.Empty;
 
         [Required]
+        [NotEqual(nameof(OldPassword), ErrorMessage = "The new password must be different from the old password.")]
         public string NewPassword { get; set; } = string.Empty;
 
         [Required]

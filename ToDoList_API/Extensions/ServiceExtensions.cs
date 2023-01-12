@@ -7,7 +7,9 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Newtonsoft.Json;
 using System.Text;
+using ToDoList_API.CustomTokenProviders;
 using ToDoList_API.Errors;
+using ToDoList_BAL.Utilities;
 using ToDoLIst_DAL.Data;
 using ToDoLIst_DAL.Entities;
 using static System.Net.Mime.MediaTypeNames;
@@ -22,17 +24,27 @@ namespace ToDoList_API.Extensions
                 options.UseSqlServer(configuration.GetConnectionString("DefaultConnection")));
         }
 
-        public static void ConfigureIdentityCore(this IServiceCollection services)
+        public static void ConfigureIdentityCore(this IServiceCollection services, IConfiguration configuration)
         {
-            services.AddIdentityCore<AppUser>()
+            services.AddIdentityCore<AppUser>(options =>
+            {
+                options.User.RequireUniqueEmail = true;
+                options.Tokens.PasswordResetTokenProvider = TokenProviderOptions.ResetPasswordTokenProvider;
+            })
                 .AddRoles<IdentityRole>()
-                .AddTokenProvider<DataProtectorTokenProvider<AppUser>>("ToDoListAPI")
+                .AddTokenProvider<RefreshTokenProvider<AppUser>>(TokenProviderOptions.RefreshTokenProvider)
+                .AddTokenProvider<ResetPasswordTokenProvider<AppUser>>(TokenProviderOptions.ResetPasswordTokenProvider)
                 .AddEntityFrameworkStores<AppDbContext>()
                 .AddDefaultTokenProviders();
 
-            services.Configure<DataProtectionTokenProviderOptions>(options =>
+            services.Configure<RefreshTokenProviderOptions>(options =>
             {
-                options.TokenLifespan = TimeSpan.FromHours(2);
+                options.TokenLifespan = TimeSpan.FromDays(int.Parse(configuration["RefreshToken:LifetimeInDays"]));
+            });
+
+            services.Configure<ResetPasswordTokenProviderOptions>(options =>
+            {
+                options.TokenLifespan = TimeSpan.FromHours(int.Parse(configuration["ResetPasswordToken:LifetimeInHours"]));
             });
         }
 

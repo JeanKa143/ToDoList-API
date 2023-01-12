@@ -1,4 +1,4 @@
-﻿namespace ToDoLIst_DAL.Utilities
+﻿namespace ToDoList_BAL.Utilities
 {
     public static class TokenPurposeOptions
     {

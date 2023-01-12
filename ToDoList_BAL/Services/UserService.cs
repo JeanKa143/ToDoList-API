@@ -9,9 +9,9 @@ using System.Text;
 using ToDoList_BAL.Exceptions;
 using ToDoList_BAL.Models.AppUser;
 using ToDoList_BAL.Models.Auth;
+using ToDoList_BAL.Utilities;
 using ToDoLIst_DAL.Contracts;
 using ToDoLIst_DAL.Entities;
-using ToDoLIst_DAL.Utilities;
 
 namespace ToDoList_BAL.Services
 {
@@ -133,16 +133,19 @@ namespace ToDoList_BAL.Services
 
         public async Task<AuthDto> RefreshJwtAsync(AuthDto authDto)
         {
-            var jwtSecurityTokenHandler = new JwtSecurityTokenHandler();
-            var tokenContent = jwtSecurityTokenHandler.ReadJwtToken(authDto.Token);
-            string? userId = tokenContent.Claims.FirstOrDefault(c => c.Type == "userId")?.Value;
+            JwtSecurityToken? jwt = ValidateJWT(authDto.Token);
+
+            if (jwt is null)
+                throw new BadRequestException("Invalid JWT");
+
+            string? userId = jwt.Claims.FirstOrDefault(c => c.Type == "userId")?.Value;
             AppUser? user = await _userRepository.GetByIdAsync(userId);
 
             if (user is null)
                 throw new BadRequestException("Invalid user id");
 
             bool isValidRefreshToken = await _userRepository.VerifyTokenAsync(user, authDto.RefreshToken,
-                TokenProviderOptions.DefaultTokenProvider, TokenPurposeOptions.RefreshToken);
+                TokenProviderOptions.RefreshTokenProvider, TokenPurposeOptions.RefreshToken);
 
             if (!isValidRefreshToken)
                 throw new BadRequestException("Invalid refresh token");
@@ -151,7 +154,7 @@ namespace ToDoList_BAL.Services
             {
                 Id = Guid.Parse(user.Id),
                 Token = await CreateJwt(user),
-                RefreshToken = await CreateRefreshToken(user)
+                RefreshToken = authDto.RefreshToken
             };
         }
 
@@ -185,7 +188,7 @@ namespace ToDoList_BAL.Services
         private async Task<string> CreateRefreshToken(AppUser user)
         {
             return await _userRepository.CreateTokenAsync(user,
-                TokenProviderOptions.DefaultTokenProvider, TokenPurposeOptions.RefreshToken);
+                TokenProviderOptions.RefreshTokenProvider, TokenPurposeOptions.RefreshToken);
         }
 
         private async Task<IEnumerable<Claim>> GetUserClaims(AppUser user)
@@ -201,6 +204,31 @@ namespace ToDoList_BAL.Services
             .Union(userClaims);
 
             return claims;
+        }
+
+        private JwtSecurityToken? ValidateJWT(string jwt)
+        {
+            var jwtSecurityTokenHandler = new JwtSecurityTokenHandler();
+            var jwtValidationParameters = new TokenValidationParameters
+            {
+                ValidateIssuerSigningKey = true,
+                ValidateIssuer = true,
+                ValidateAudience = true,
+                ValidateLifetime = false,
+                ValidIssuer = _configuration["JwtSettings:Issuer"],
+                ValidAudience = _configuration["JwtSettings:Audience"],
+                IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["JwtSettings:Key"]))
+            };
+
+            try
+            {
+                jwtSecurityTokenHandler.ValidateToken(jwt, jwtValidationParameters, out SecurityToken validatedToken);
+                return validatedToken as JwtSecurityToken;
+            }
+            catch (Exception)
+            {
+                return null;
+            }
         }
     }
 }

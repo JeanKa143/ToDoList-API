@@ -74,19 +74,13 @@ namespace ToDoLIst_DAL.Repositories
 
         public async Task<bool> VerifyTokenAsync(AppUser user, string token, string provider, string purpose)
         {
-            bool isValidToken = await _userManager.VerifyUserTokenAsync(user, provider, purpose, token);
-
-            if (!isValidToken)
-                await _userManager.UpdateSecurityStampAsync(user);
-
-            return isValidToken;
+            return await _userManager.VerifyUserTokenAsync(user, provider, purpose, token);
         }
 
         public async Task<string> CreateTokenAsync(AppUser user, string provider, string purpose)
         {
             await _userManager.RemoveAuthenticationTokenAsync(user, provider, purpose);
             var newToken = await _userManager.GenerateUserTokenAsync(user, provider, purpose);
-            await _userManager.SetAuthenticationTokenAsync(user, provider, purpose, newToken);
 
             return newToken;
         }

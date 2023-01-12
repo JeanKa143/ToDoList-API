@@ -134,6 +134,7 @@ namespace ToDoList_API.Tests.ModelTests
                 new object[] { Guid.NewGuid(), "oldPassword", "newPassword", null, false },
                 new object[] { Guid.NewGuid(), null, "newPassword", "newPassword", false },
                 new object[] { Guid.NewGuid(), "oldPassword", "newPassword", "differentPassword", false },
+                new object[] { Guid.NewGuid(), "oldPassword", "oldPassword", "oldPassword", false },
                 new object[] { Guid.NewGuid(), "oldPassword", "newPassword", "newPassword", true }
             };
 

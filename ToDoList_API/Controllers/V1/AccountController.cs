@@ -7,12 +7,13 @@ using ToDoList_BAL.Models.AppUser;
 using ToDoList_BAL.Models.Auth;
 using ToDoList_BAL.Services;
 
-namespace ToDoList_API.Controllers
+namespace ToDoList_API.Controllers.V1
 {
     [ApiController]
     [Authorize]
     [ApiConventionType(typeof(AppConventions))]
-    [Route("api/users")]
+    [Route("api/v{version:apiVersion}/users")]
+    [ApiVersion("1.0")]
     public class AccountController : ControllerBase
     {
         private readonly UserService _userService;

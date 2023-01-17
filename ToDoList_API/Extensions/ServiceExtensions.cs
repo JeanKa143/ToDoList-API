@@ -52,12 +52,15 @@ namespace ToDoList_API.Extensions
         {
             services.AddSwaggerGen(options =>
             {
+                options.SwaggerDoc("v1", new OpenApiInfo { Title = "ToDoList_API", Version = "v1" });
+
                 options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
                 {
                     Name = "Authorization",
                     Type = SecuritySchemeType.ApiKey,
                     Scheme = JwtBearerDefaults.AuthenticationScheme,
                     In = ParameterLocation.Header,
+                    BearerFormat = "JWT",
                     Description = @"JWT Authorization header using the Bearer scheme.
                                   Enter 'Bearer' [space] and then your token in the text input below.
                                   Example: 'Bearer 12345abcdef'"
@@ -122,15 +125,34 @@ namespace ToDoList_API.Extensions
 
         public static void ConfigureControllers(this IServiceCollection services)
         {
-            services.AddControllers()
-                .ConfigureApiBehaviorOptions(options =>
-                {
-                    options.InvalidModelStateResponseFactory = context =>
-                        new BadRequestObjectResult(new BadRequestError(context.ModelState))
-                        {
-                            ContentTypes = { Application.Json }
-                        };
-                });
+            services.AddControllers(options =>
+            {
+                options.Conventions.Add(new SwaggerGroupByVersion());
+            })
+            .ConfigureApiBehaviorOptions(options =>
+            {
+                options.InvalidModelStateResponseFactory = context =>
+                    new BadRequestObjectResult(new BadRequestError(context.ModelState))
+                    {
+                        ContentTypes = { Application.Json }
+                    };
+            });
+        }
+
+        public static void ConnfigureVersioning(this IServiceCollection services)
+        {
+            services.AddApiVersioning(options =>
+            {
+                options.AssumeDefaultVersionWhenUnspecified = true;
+                options.DefaultApiVersion = new ApiVersion(1, 0);
+                options.ReportApiVersions = true;
+            });
+
+            services.AddVersionedApiExplorer(options =>
+            {
+                options.GroupNameFormat = "'v'VVV";
+                options.SubstituteApiVersionInUrl = true;
+            });
         }
 
         public static void ConfigureEmailService(this IServiceCollection services, IConfiguration configuration)

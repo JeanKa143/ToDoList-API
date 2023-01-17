@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using ToDoList_API.Controllers;
+using ToDoList_API.Controllers.V1;
 using ToDoList_API.Tests.Mocks;
 using ToDoList_BAL.Exceptions;
 using ToDoList_BAL.Models.AppUser;

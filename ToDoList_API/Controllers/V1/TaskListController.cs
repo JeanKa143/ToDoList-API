@@ -5,13 +5,14 @@ using ToDoList_API.Filters;
 using ToDoList_BAL.Models.TaskList;
 using ToDoList_BAL.Services;
 
-namespace ToDoList_API.Controllers
+namespace ToDoList_API.Controllers.V1
 {
     [ApiController]
     [Authorize]
     [ApiConventionType(typeof(AppConventions))]
     [ServiceFilter(typeof(ValidateRouteUserIdFilter))]
-    [Route("api/users/{userId}/task-list-groups/{groupId}/task-lists")]
+    [Route("api/v{version:apiVersion}/users/{userId}/task-list-groups/{groupId}/task-lists")]
+    [ApiVersion("1.0")]
     public class TaskListController : ControllerBase
     {
         private readonly TaskListService _taskListService;

@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
-using ToDoList_API.Controllers;
+using ToDoList_API.Controllers.V1;
 using ToDoList_API.Errors;
 
 namespace ToDoList_API.Filters

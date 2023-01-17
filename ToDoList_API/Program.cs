@@ -38,6 +38,7 @@ builder.Services.ConfigureAuthentication(builder.Configuration);
 
 builder.Services.ConfigureEmailService(builder.Configuration);
 builder.Services.ConfigureControllers();
+builder.Services.ConnfigureVersioning();
 
 var app = builder.Build();
 
@@ -45,7 +46,10 @@ var app = builder.Build();
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
-    app.UseSwaggerUI();
+    app.UseSwaggerUI(options =>
+    {
+        options.SwaggerEndpoint("/swagger/v1/swagger.json", "ToDoList_API v1");
+    });
 }
 
 app.UseMiddleware<ExceptionMiddleware>();

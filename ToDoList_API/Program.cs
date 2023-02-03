@@ -1,4 +1,6 @@
 using EmailService;
+using HealthChecks.UI.Client;
+using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using ToDoList_API.Extensions;
 using ToDoList_API.Filters;
 using ToDoList_API.Middlewares;
@@ -16,6 +18,10 @@ builder.Services.ConfigureIdentityCore(builder.Configuration);
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.ConfigureSwaggerGen();
+
+builder.Services.AddHealthChecks()
+    .AddSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"), tags: new[] { "database" });
+builder.Services.AddHealthChecksUI().AddInMemoryStorage();
 
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
@@ -51,6 +57,13 @@ if (app.Environment.IsDevelopment())
         options.SwaggerEndpoint("/swagger/v1/swagger.json", "ToDoList_API v1");
     });
 }
+
+app.MapHealthChecks("/health", new HealthCheckOptions
+{
+    ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
+});
+
+app.MapHealthChecksUI();
 
 app.UseMiddleware<ExceptionMiddleware>();
 

@@ -162,5 +162,20 @@ namespace ToDoList_API.Extensions
                 .Get<EmailConfiguration>();
             services.AddSingleton(emailConfig);
         }
+
+        public static void ConfiguraCors(this IServiceCollection services, IConfiguration configuration)
+        {
+            var clientURL = configuration.GetValue<string>("ClientURL");
+
+            services.AddCors(options =>
+            {
+                options.AddDefaultPolicy(builder =>
+                {
+                    builder.WithOrigins(clientURL)
+                    .AllowAnyMethod()
+                    .AllowAnyHeader();
+                });
+            });
+        }
     }
 }

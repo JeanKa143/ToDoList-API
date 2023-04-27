@@ -45,6 +45,7 @@ builder.Services.ConfigureAuthentication(builder.Configuration);
 builder.Services.ConfigureEmailService(builder.Configuration);
 builder.Services.ConfigureControllers();
 builder.Services.ConnfigureVersioning();
+builder.Services.ConfiguraCors(builder.Configuration);
 
 var app = builder.Build();
 
@@ -68,6 +69,8 @@ app.MapHealthChecksUI();
 app.UseMiddleware<ExceptionMiddleware>();
 
 app.UseHttpsRedirection();
+
+app.UseCors();
 
 app.UseAuthentication();
 

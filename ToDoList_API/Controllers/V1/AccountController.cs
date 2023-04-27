@@ -32,7 +32,7 @@ namespace ToDoList_API.Controllers.V1
         }
 
         [AllowAnonymous]
-        [HttpPost]
+        [HttpPost("register")]
         public async Task<IActionResult> Register([FromBody] CreateUserDto createUserDto)
         {
             IEnumerable<IdentityError> errors = await _userService.AddAsync(createUserDto);

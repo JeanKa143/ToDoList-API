@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
 using ToDoList_API.Errors;
 using ToDoList_BAL.Exceptions;
 
@@ -30,7 +31,13 @@ namespace ToDoList_API.Middlewares
         private Task HandleExceptionAsync(HttpContext context, Exception ex)
         {
             ApiError apiError = CreateApiError(context, ex);
-            string response = JsonConvert.SerializeObject(apiError);
+            string response = JsonConvert.SerializeObject(apiError, new JsonSerializerSettings
+            {
+                ContractResolver = new DefaultContractResolver
+                {
+                    NamingStrategy = new CamelCaseNamingStrategy()
+                }
+            });
 
             context.Response.ContentType = "application/json";
             context.Response.StatusCode = apiError.StatusCode;

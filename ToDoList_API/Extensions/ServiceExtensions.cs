@@ -1,4 +1,4 @@
-﻿using EmailService;
+using EmailService;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -163,7 +163,7 @@ namespace ToDoList_API.Extensions
             services.AddSingleton(emailConfig);
         }
 
-        public static void ConfiguraCors(this IServiceCollection services, IConfiguration configuration)
+        public static void ConfigureCors(this IServiceCollection services, IConfiguration configuration)
         {
             var clientURL = configuration.GetValue<string>("ClientURL");
 

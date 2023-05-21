@@ -11,7 +11,7 @@ namespace ToDoList_API.Controllers.V1
     [Authorize]
     [ApiConventionType(typeof(AppConventions))]
     [ServiceFilter(typeof(ValidateRouteUserIdFilter))]
-    [Route("api/v{version:apiVersion}y/users/{userId}/task-list-groups/{groupId}/task-lists/{listId}/tasks/{taskId}/steps")]
+    [Route("api/v{version:apiVersion}/users/{userId}/task-list-groups/{groupId}/task-lists/{listId}/tasks/{taskId}/steps")]
     [ApiVersion("1.0")]
     public class TaskStepController : ControllerBase
     {
